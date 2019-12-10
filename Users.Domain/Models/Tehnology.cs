@@ -4,20 +4,20 @@ using System.Text;
 
 namespace Users.Domain.Models
 {
-    public class Technologie
+    public class Technology
     {
         public Guid Id { get; private set; }
         public string Name { get; private set; }
-        public List<UserTechnologie> UserTechnologies { get; private set; }
+        public List<UserTechnology> UserTechnologies { get; private set; }
 
-        private Technologie()
+        private Technology()
         {
             Id = Guid.NewGuid();
-            UserTechnologies = new List<UserTechnologie>();
+            UserTechnologies = new List<UserTechnology>();
         }
-        public static Technologie CreateTechnologie(string name)
+        public static Technology CreateTechnology(string name)
         {
-            return new Technologie()
+            return new Technology()
             {
                 Name = name
             };

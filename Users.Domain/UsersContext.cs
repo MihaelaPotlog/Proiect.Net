@@ -4,12 +4,12 @@ using Users.Domain.Models;
 
 namespace Users.Domain
 {
-    public class UsersContext : DbContext
+    public sealed class UsersContext : DbContext
     {
         public DbSet<User> Users { get; set; }
 
-        public DbSet<Technologie> Technologies { get; set; }
-        public DbSet<UserTechnologie> UserTechnologies { get; set; }
+        public DbSet<Technology> Technologies { get; set; }
+        public DbSet<UserTechnology> UserTechnologies { get; set; }
 
 
         public UsersContext(DbContextOptions<UsersContext> options) : base(options)
@@ -32,10 +32,10 @@ namespace Users.Domain
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<UserTechnologie>().HasKey(t => new { t.UserId, t.TechnologieId });
-            modelBuilder.Entity<Technologie>().HasData(
-                Technologie.CreateTechnologie("Java"),
-                Technologie.CreateTechnologie("JavaScript")
+            modelBuilder.Entity<UserTechnology>().HasKey(t => new { t.UserId, t.TechnologyId });
+            modelBuilder.Entity<Technology>().HasData(
+                Technology.CreateTechnology("Java"),
+                Technology.CreateTechnology("JavaScript")
             );
         }
     }
