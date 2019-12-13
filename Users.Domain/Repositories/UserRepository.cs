@@ -16,7 +16,7 @@ namespace Users.Domain.Repositories
 
         public List<User> GetAll()
         {
-            return new List<User>();
+            return _context.Users.ToList();
         }
 
         public User Get(Guid UserId)
@@ -24,11 +24,24 @@ namespace Users.Domain.Repositories
             return new User();
         }
 
-        public User Update(User user)
+        public User Update(User user, Guid modifiedUserId)
         {
-            return new User();
+            User modifiedUser = _context.Users.Find(modifiedUserId);
+            modifiedUser.Username = user.FirstName;
+            modifiedUser.LastName = user.LastName;
+            modifiedUser.Username = user.Username;
+
+            _context.SaveChanges();
+            return modifiedUser;
         }
 
+        public User UpdateEmail(Guid userId, string newEmail)
+        {
+            User currentUser = _context.Users.Find(userId);
+            currentUser.Email = newEmail;
+            _context.SaveChanges();
+            return currentUser;
+        }
         public bool Delete(Guid userId)
         {
             return true;
@@ -90,7 +103,7 @@ namespace Users.Domain.Repositories
 
         public User GetByUsername(string username)
         {
-            return _context.Users.Where(e => e.Username == username).First();
+            return _context.Users.FirstOrDefault(e => e.Username == username);
         }
     }
 }

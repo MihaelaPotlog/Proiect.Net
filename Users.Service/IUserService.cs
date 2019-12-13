@@ -11,6 +11,6 @@ namespace Users.Service
         IEnumerable<User> GetUsers(); 
         User LoginUser(LoginUserDto request);
         string RegisterUser(CreateUserDto request);
-        User ModifyUser(ModifyUserDto request);
+        string ModifyUser(ModifyUserDto request);
     }
 }

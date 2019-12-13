@@ -6,14 +6,14 @@ namespace Users.Domain.Models
     public class User
     {
         public Guid Id { get; private set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; private set; }
-        public string Username { get; set; }
+        public string FirstName { get; internal set; }
+        public string LastName { get; internal set; }
+        public string Email { get; internal set; }
+        public string Username { get; internal set; }
         public string Password { get; private set; }
         public List<UserTechnology> UserTechnologies { get; private set; }
 
-        public User()
+        internal User()
         {
             Id = Guid.NewGuid();
             UserTechnologies = new List<UserTechnology>();

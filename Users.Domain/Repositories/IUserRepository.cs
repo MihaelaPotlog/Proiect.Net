@@ -9,7 +9,7 @@ namespace Users.Domain.Repositories
     {
         List<User> GetAll();
         User Get(Guid userId);
-        User Update(User user);
+        public User Update(User user, Guid modifiedUserId);
         bool Delete(Guid userId);
         User GetByEmail(string email);
         User Add(string firstName, string lastName, string username, string email, string password);

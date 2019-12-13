@@ -8,7 +8,7 @@ using Users.Service.DTOs;
 namespace Users.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("v1/[controller]")]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -56,11 +56,12 @@ namespace Users.API.Controllers
         [HttpPut]
         public ActionResult<User> ModifyUser(ModifyUserDto dto)
         {
-            User modifiedUser = _userService.ModifyUser(dto);
-            if (modifiedUser == null)
-                return BadRequest();
-            else
-                return Ok(modifiedUser);
+            // User modifiedUser = _userService.ModifyUser(dto);
+            // if (modifiedUser == null)
+            //     return BadRequest();
+            // else
+            //     return Ok(modifiedUser);
+            return BadRequest();
         }
     }
 
