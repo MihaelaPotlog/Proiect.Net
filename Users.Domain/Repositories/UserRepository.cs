@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Users.Domain.Models;
 
 namespace Users.Domain.Repositories
@@ -14,69 +17,60 @@ namespace Users.Domain.Repositories
             _context = context;
         }
 
-        public List<User> GetAll()
+        public async Task<List<User>> GetAll(CancellationToken cancellationToken)
         {
-            return _context.Users.ToList();
+            return await _context.Users.ToListAsync(cancellationToken);
         }
 
-        public User Get(Guid UserId)
+        public async Task<User> Get(Guid userId, CancellationToken cancellationToken)
         {
-            return new User();
+            return await _context.Users.Where( user=> user.Id == userId).FirstOrDefaultAsync(cancellationToken);
         }
 
-        public User Update(User user, Guid modifiedUserId)
+        public async Task<User> Update(User user, CancellationToken cancellationToken)
         {
-            User modifiedUser = _context.Users.Find(modifiedUserId);
-            modifiedUser.Username = user.FirstName;
-            modifiedUser.LastName = user.LastName;
-            modifiedUser.Username = user.Username;
-
-            _context.SaveChanges();
-            return modifiedUser;
+            _context.Update(user);
+            await _context.SaveChangesAsync(cancellationToken);
+            return user;
         }
 
-        public User UpdateEmail(Guid userId, string newEmail)
-        {
-            User currentUser = _context.Users.Find(userId);
-            currentUser.Email = newEmail;
-            _context.SaveChanges();
-            return currentUser;
-        }
+        
         public bool Delete(Guid userId)
         {
             return true;
         }
 
 
-        public User GetByEmail(string email)
+        public async Task<User> GetByEmail(string email, CancellationToken cancellationToken)
         {
-            return _context.Users.Where(user => user.Email == email).FirstOrDefault();
+            return await _context.Users.FirstOrDefaultAsync(user => user.Email == email, cancellationToken);
 
 
         }
 
-        public User Add(string firstName, string lastName, string username, string email, string password)
+        public async Task<User> Add(string firstName, string lastName, string username, string email, string password, CancellationToken cancellationToken)
         {
             var newUser = User.UserFactory(firstName, lastName, username, email, password);
             _context.Users.Add(newUser);
+           await  _context.SaveChangesAsync(cancellationToken);
             return newUser;
         }
 
-        public void AddUserTechnologyLinks(string[] knownTechnologies, User user)
+        public async Task AddUserTechnologyLinks(string[] knownTechnologies, User user, CancellationToken cancellationToken)
         {
             foreach (string knownTechnology in knownTechnologies)
             {
-                var technology = _context.Technologies.Where(t => t.Name == knownTechnology).ToList<Technology>();
-                var UserTechnologyLink = new UserTechnology();
-                UserTechnologyLink.User = user;
-                UserTechnologyLink.Technology = technology[0];
-                _context.UserTechnologies.Add(UserTechnologyLink);
+                var technology = await _context.Technologies.Where(t => t.Name == knownTechnology).ToListAsync(cancellationToken);
+                var userTechnologyLink = new UserTechnology();
+                userTechnologyLink.User = user;
+                userTechnologyLink.Technology = technology[0];
+                _context.UserTechnologies.Add(userTechnologyLink);
             }
-            _context.SaveChanges();
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
 
-        public void RemoveUserTechnologyLinks(string[] removedTechnologiesNames, User user)
+        public async Task RemoveUserTechnologyLinks(string[] removedTechnologiesNames, User user, CancellationToken cancellationToken)
         {
             if (removedTechnologiesNames.Length != 0)
             {
@@ -84,7 +78,7 @@ namespace Users.Domain.Repositories
 
                 foreach (string removedTechnologyName in removedTechnologiesNames)
                 {
-                    Technology removedTechnology = GetTechnologyByName(removedTechnologyName);
+                    Technology removedTechnology = await GetTechnologyByName(removedTechnologyName, cancellationToken);
 
                     UserTechnology userTechnologyLink = userTechnologyLinks.Find(link =>
                         link.TechnologyId == removedTechnology.Id
@@ -96,14 +90,14 @@ namespace Users.Domain.Repositories
             }
         }
 
-        public Technology GetTechnologyByName(string technologyName)
+        public async Task<Technology> GetTechnologyByName(string technologyName, CancellationToken cancellationToken)
         {
-            return _context.Technologies.First(technology => technology.Name == technologyName);
+            return await _context.Technologies.FirstAsync(technology => technology.Name == technologyName, cancellationToken);
         }
 
-        public User GetByUsername(string username)
+        public async Task<User> GetByUsername(string username, CancellationToken cancellationToken)
         {
-            return _context.Users.FirstOrDefault(e => e.Username == username);
+            return await _context.Users.FirstOrDefaultAsync(e => e.Username == username, cancellationToken);
         }
     }
 }

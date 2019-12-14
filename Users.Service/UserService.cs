@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using Users.Domain.Models;
 using Users.Domain.Repositories;
 using Users.Service.DTOs;
@@ -18,21 +20,21 @@ namespace Users.Service
             _userRepository = userRepository;
         }
 
-        public IEnumerable<User> GetUsers()
+        public async Task<IEnumerable<User>> GetUsers(CancellationToken cancellationToken)
         {
-            return _userRepository.GetAll();
+            return await _userRepository.GetAll(cancellationToken);
         }
 
-        public User LoginUser(LoginUserDto request)
+        public async Task<User> LoginUser(LoginUserDto request, CancellationToken cancellationToken)
         {
-            var EmailToCheck = request.Email;
-            var PasswordToCheck = request.Password;
+            var emailToCheck = request.Email;
+            var passwordToCheck = request.Password;
             var addr = new EmailAddressAttribute();
 
-            if (addr.IsValid(EmailToCheck))
+            if (addr.IsValid(emailToCheck))
             {
-                var foundUser = _userRepository.GetByEmail(EmailToCheck);
-                if (PasswordToCheck == foundUser.Password)
+                var foundUser = await _userRepository.GetByEmail(emailToCheck, cancellationToken);
+                if (passwordToCheck == foundUser.Password)
                     return foundUser;
                 else
                     return null;
@@ -43,16 +45,16 @@ namespace Users.Service
             }
         }
 
-        public string RegisterUser(CreateUserDto request)
+        public async Task<string> RegisterUser(CreateUserDto request, CancellationToken cancellationToken)
         {
             CreateUserDtoValidator dtoValidator = new CreateUserDtoValidator(_userRepository);
-            var result = dtoValidator.Validate(request);
+            var result = await dtoValidator.ValidateAsync(request, cancellationToken);
 
             if (result.IsValid == true)
             {
-                var currentUser = _userRepository.Add(request.FirstName, request.LastName, request.Username,
-                    request.Email, request.Password);
-                _userRepository.AddUserTechnologyLinks(request.KnownTechnologies, currentUser);
+                var currentUser = await _userRepository.Add(request.FirstName, request.LastName, request.Username,
+                    request.Email, request.Password, cancellationToken);
+                await _userRepository.AddUserTechnologyLinks(request.KnownTechnologies, currentUser, cancellationToken);
 
                 return "success";
             }
@@ -60,27 +62,24 @@ namespace Users.Service
             return result.ToString();
         }
 
-        public string ModifyUser(ModifyUserDto request)
+        public async Task<string> ModifyUser(ModifyUserDto request, CancellationToken cancellationToken)
         {
-            User modifiedUser = _userRepository.Get(request.Id);
-
+            User modifiedUser = await _userRepository.Get(request.Id, cancellationToken);
             if (modifiedUser == null)
-            {
-                return "empthy body";
-            }
-
-
+                return "invalid id";
             ModifyUserDtoValidator modifyUserValidator = new ModifyUserDtoValidator(_userRepository);
-            var validationResult = modifyUserValidator.Validate(request);
+            var  validationResult = await modifyUserValidator.ValidateAsync(request, cancellationToken);
 
             if (validationResult.IsValid == false)
                 return validationResult.ToString();
 
-            
-            // _userRepository.Update();
-            _userRepository.AddUserTechnologyLinks(request.AddedTechnologiesNames, modifiedUser);
-            _userRepository.RemoveUserTechnologyLinks(request.RemovedTechnologiesNames, modifiedUser);
+            modifiedUser.FirstName = request.FirstName;
+            modifiedUser.LastName = request.LastName;
+            modifiedUser.Username = request.Username;
+            await _userRepository.Update(modifiedUser, cancellationToken);
 
+            await _userRepository.AddUserTechnologyLinks(request.AddedTechnologiesNames, modifiedUser, cancellationToken);
+            await _userRepository.RemoveUserTechnologyLinks(request.RemovedTechnologiesNames, modifiedUser, cancellationToken);
 
             return "success";
         }

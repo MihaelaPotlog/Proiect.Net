@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Users.Domain.Models;
@@ -19,15 +20,15 @@ namespace Users.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<UserDto>> GetAll()
+        public async Task<ActionResult<IEnumerable<User>>> GetAll(CancellationToken cancellationToken)
         {
-            return Ok(_userService.GetUsers());
+            return Ok(await _userService.GetUsers(cancellationToken));
         }
 
         [HttpPost("login")]
-        public ActionResult<User> LoginUser(LoginUserDto dto)
+        public async Task<ActionResult<User>> LoginUser(LoginUserDto dto, CancellationToken cancellationToken)
         {
-            var user = _userService.LoginUser(dto);
+            var user = await _userService.LoginUser(dto, cancellationToken);
             try
             {
                 if (user != null)
@@ -45,27 +46,25 @@ namespace Users.API.Controllers
             }
         }
         [HttpPost]
-        public ActionResult<string> CreateUser(CreateUserDto dto)
+        public async Task<ActionResult<string>> CreateUser(CreateUserDto dto, CancellationToken cancellationToken)
         {
-            var raspuns = _userService.RegisterUser(dto);
+            var raspuns = await _userService.RegisterUser(dto, cancellationToken);
             if (raspuns.Equals("success"))
                 return raspuns;
             else
                 return BadRequest(raspuns);
         }
         [HttpPut]
-        public ActionResult<User> ModifyUser(ModifyUserDto dto)
+        public async Task<ActionResult> ModifyUser(ModifyUserDto dto, CancellationToken cancellationToken)
         {
-            // User modifiedUser = _userService.ModifyUser(dto);
-            // if (modifiedUser == null)
-            //     return BadRequest();
-            // else
-            //     return Ok(modifiedUser);
-            return BadRequest();
+            string result = await _userService.ModifyUser(dto, cancellationToken);
+            if (result != "success")
+                return BadRequest(result);
+            else
+                return Ok();
+            
         }
     }
 
-    public class UserDto
-    {
-    }
+  
 }

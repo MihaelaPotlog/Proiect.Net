@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using Users.Domain.Repositories;
 using Users.Service.DTOs;
 
@@ -19,10 +21,10 @@ namespace Users.Service.Validators
             RuleFor(dto => dto.LastName).Must(MatchNames).WithMessage("invalid last name");
 
             RuleFor(dto => dto.Email).Must(MatchEmail).WithMessage("invalid email");
-            RuleFor(dto => dto.Email).Must(BeUniqueEmail).WithMessage("email already in use");
+            RuleFor(dto => dto.Email).MustAsync(BeUniqueEmail).WithMessage("email already in use");
 
             RuleFor(dto => dto.Username).Must(MatchUserName).WithMessage("invalid username");
-            RuleFor(dto => dto.Username).Must(BeUniqueUsername).WithMessage("username already exists");
+            RuleFor(dto => dto.Username).MustAsync(BeUniqueUsername).WithMessage("username already exists");
             
             
             
@@ -43,11 +45,11 @@ namespace Users.Service.Validators
             return Regex.IsMatch(username, pattern);
         }
 
-        private bool BeUniqueEmail(string email)
+        private async Task<bool> BeUniqueEmail(string email, CancellationToken cancellationToken)
         {
             try
             {
-                var exists = UserRepository.GetByEmail(email);
+                var exists = await UserRepository.GetByEmail(email, cancellationToken);
                 if (exists != null)
                     return false;
                 else
@@ -59,11 +61,11 @@ namespace Users.Service.Validators
             }
         }
 
-        private bool BeUniqueUsername(string username)
+        private async Task<bool> BeUniqueUsername(string username, CancellationToken cancellationToken)
         {
             try
             {
-                var exists = UserRepository.GetByUsername(username);
+                var exists = await UserRepository.GetByUsername(username, cancellationToken);
                 if (exists != null)
                     return false;
                 else
