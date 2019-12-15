@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Users.Domain.Models;
 
 namespace Users.Domain.Repositories
 {
     public interface IUserRepository
     {
-        List<User> GetAll();
-        User Get(Guid userId);
-        User Update(User user);
+        Task<List<User>> GetAllUsers(CancellationToken cancellationToken);
+        Task<User> GetUser(Guid userId, CancellationToken cancellationToken);
+        Task<List<Technology>> GetAllTechnologies(CancellationToken cancellationToken);
+        public Task<User> Update(User user, CancellationToken cancellationToken);
         bool Delete(Guid userId);
-        User GetByEmail(string email);
-        User Add(string firstName, string lastName, string username, string email, string password);
-        void AddUserTechnologyLinks(string[] knownTechnologies, User user);
-        User GetByUsername(string username);
-        Technology GetTechnologyByName(string technologyName);
-        void RemoveUserTechnologyLinks(string[] removedTechnologiesNames, User user);
+        Task<User> GetByEmail(string email, CancellationToken cancellationToken);
+        Task<User> Add(string firstName, string lastName, string username, string email, string password, CancellationToken cancellationToken);
+        Task AddUserTechnologyLinks(string[] knownTechnologies, User user, CancellationToken cancellationToken);
+        Task<User> GetByUsername(string username, CancellationToken cancellationToken);
+        Task<Technology> GetTechnologyByName(string technologyName, CancellationToken cancellationToken);
+        Task RemoveUserTechnologyLinks(string[] removedTechnologiesNames, User user, CancellationToken cancellationToken);
     }
 }

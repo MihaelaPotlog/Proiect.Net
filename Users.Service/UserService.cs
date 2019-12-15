@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using Users.Domain.Models;
 using Users.Domain.Repositories;
 using Users.Service.DTOs;
+using Users.Service.Validators;
 
 namespace Users.Service
 {
@@ -17,20 +20,25 @@ namespace Users.Service
             _userRepository = userRepository;
         }
 
-        public IEnumerable<User> GetUsers()
+        public async Task<IEnumerable<User>> GetUsers(CancellationToken cancellationToken)
         {
-            return _userRepository.GetAll();
+            return await _userRepository.GetAllUsers(cancellationToken);
         }
-        public User LoginUser(LoginUserDto request)
+        public async Task<IEnumerable<Technology>> GetTechnologies(CancellationToken cancellationToken)
         {
-            var EmailToCheck = request.Email;
-            var PasswordToCheck = request.Password;
+            return await _userRepository.GetAllTechnologies(cancellationToken);
+        }
+
+        public async Task<User> LoginUser(LoginUserDto request, CancellationToken cancellationToken)
+        {
+            var emailToCheck = request.Email;
+            var passwordToCheck = request.Password;
             var addr = new EmailAddressAttribute();
 
-            if (addr.IsValid(EmailToCheck))
+            if (addr.IsValid(emailToCheck))
             {
-                var foundUser = _userRepository.GetByEmail(EmailToCheck);
-                if (PasswordToCheck == foundUser.Password)
+                var foundUser = await _userRepository.GetByEmail(emailToCheck, cancellationToken);
+                if (passwordToCheck == foundUser.Password)
                     return foundUser;
                 else
                     return null;
@@ -41,116 +49,45 @@ namespace Users.Service
             }
         }
 
-        public string RegisterUser(CreateUserDto request)
+        public async Task<string> RegisterUser(CreateUserDto request, CancellationToken cancellationToken)
         {
-            if (!MatchNames(request.FirstName))
-                return "invalid first name";
-            if (!MatchNames(request.LastName))
-                return "invalid last name";
-            string checkedEmail = CheckEmail(request.Email);
-            if (checkedEmail.Equals("valid") != true)
-                return checkedEmail;
-            string checkedUserName = checkUsername(request.Username);
-            if (checkedUserName.Equals("valid") != true)
-                return checkedUserName;
+          
+            CreateUserDtoValidator dtoValidator = new CreateUserDtoValidator(_userRepository);
+            var result = await dtoValidator.ValidateAsync(request, cancellationToken);
 
-            var currentUser = _userRepository.Add(request.FirstName, request.LastName, request.Username, request.Email, request.Password);
-            _userRepository.AddUserTechnologyLinks(request.KnownTechnologies, currentUser);
+            if (result.IsValid == true)
+            {
+                var currentUser = await _userRepository.Add(request.FirstName, request.LastName, request.Username,
+                    request.Email, request.Password, cancellationToken);
+                
+                await _userRepository.AddUserTechnologyLinks(request.KnownTechnologies, currentUser, cancellationToken);
+
+                return "success";
+            }
+
+            return result.ToString();
+        }
+
+        public async Task<string> ModifyUser(ModifyUserDto request, CancellationToken cancellationToken)
+        {
+            User modifiedUser = await _userRepository.GetUser(request.Id, cancellationToken);
+            if (modifiedUser == null)
+                return "invalid id";
+            ModifyUserDtoValidator modifyUserValidator = new ModifyUserDtoValidator(_userRepository);
+            var  validationResult = await modifyUserValidator.ValidateAsync(request, cancellationToken);
+
+            if (validationResult.IsValid == false)
+                return validationResult.ToString();
+
+            modifiedUser.FirstName = request.FirstName;
+            modifiedUser.LastName = request.LastName;
+            modifiedUser.Username = request.Username;
+            await _userRepository.Update(modifiedUser, cancellationToken);
+
+            await _userRepository.AddUserTechnologyLinks(request.AddedTechnologiesNames, modifiedUser, cancellationToken);
+            await _userRepository.RemoveUserTechnologyLinks(request.RemovedTechnologiesNames, modifiedUser, cancellationToken);
 
             return "success";
-        }
-
-        public User ModifyUser(ModifyUserDto request)
-        {
-            User modifiedUser = _userRepository.Get(request.Id);
-
-            if (IsValidUserData(request, modifiedUser) == false)
-                return null;
-
-            modifiedUser.Username = request.NewUsername;
-            modifiedUser.FirstName = request.NewFirstName;
-            modifiedUser.LastName = request.NewLastName;
-
-            _userRepository.AddUserTechnologyLinks(request.AddedTechnologiesNames, modifiedUser);
-            _userRepository.RemoveUserTechnologyLinks(request.RemovedTechnologiesNames, modifiedUser);
-
-
-            return modifiedUser;
-        }
-
-        bool IsValidUserData(ModifyUserDto request, User modifiedUser)
-        {
-            if (modifiedUser == null)
-            {
-                return false;
-            }
-
-            //            ModifyUserValidator modifyUserValidator = new ModifyUserValidator();
-            //            ValidationResult validationResult = modifyUserValidator.Validate(request);
-            //
-            //            if (validationResult.IsValid == false)
-            //                return false;
-            List<User> users = _userRepository.GetAll();
-            foreach (User user in users)
-            {
-                if (user.Username == request.NewUsername && user.Id != request.Id)
-                    return false;
-
-            }
-
-            return true;
-        }
-        private bool MatchNames(string name)
-        {
-            string pattern = "^[A-Z]{1}[a-z]+";
-            return Regex.IsMatch(name, pattern);
-        }
-        private bool MatchEmail(string email)
-        {
-            string pattern = ".+@[a-z0-9]+.[a-z]+";
-            return Regex.IsMatch(email, pattern);
-        }
-        private bool MatchUserName(string username)
-        {
-            string pattern = "[A-Za-z0-9_-]+";
-            return Regex.IsMatch(username, pattern);
-        }
-
-        private string CheckEmail(string email)
-        {
-            if (!MatchEmail(email))
-                return "invalid email";
-            try
-            {
-                var exists = _userRepository.GetByEmail(email);
-                if (exists != null)
-                    return "email already in use";
-                else
-                    return "valid";
-            }
-            catch (ArgumentNullException)
-            {
-                return "valid";
-            }
-        }
-        private string checkUsername(string username)
-        {
-            if (!MatchUserName(username))
-                return "invalid username";
-
-            try
-            {
-                var exists = _userRepository.GetByUsername(username);
-                if (exists != null)
-                    return "username already exists";
-                else
-                    return "valid";
-            }
-            catch (ArgumentNullException)
-            {
-                return "valid";
-            }
-
         }
     }
 }
