@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
 namespace Projects.Domain.Repositories
 {
@@ -13,10 +16,10 @@ namespace Projects.Domain.Repositories
         public ProjectRepository(ProjectsContext projectsContext){
             ProjectContext = projectsContext;
             }
-        public List<Project> GetAll() {
+        public async Task<List<Project>> GetAll(CancellationToken cancellationToken) {
             //var db = new ProjectsContext();
-            var projects = (from p in ProjectContext.Projects select p).ToList();
-            return projects;
+            var projects = (from p in ProjectContext.Projects select p).ToListAsync(cancellationToken);
+            return await projects;
         }
         public bool Delete(Guid projectId) {
 
@@ -29,19 +32,19 @@ namespace Projects.Domain.Repositories
             ProjectContext.SaveChanges();
             return true;
         }
-        public Project Get(Guid projectId) {
-            var proj = (from p in ProjectContext.Projects where p.Id == projectId select p).FirstOrDefault();
+        public async Task<Project> Get(Guid projectId,CancellationToken cancellationToken) {
+            var proj = (from p in ProjectContext.Projects where p.Id == projectId select p).FirstOrDefaultAsync(cancellationToken);
 
-            return proj;
+            return await proj;
         }
-        public Project Add(Guid ownerId, string name, string description, string state, string[] tehnologii) {
+        public async Task<Project> Add(Guid ownerId, string name, string description, string state, string[] tehnologii,CancellationToken cancellationToken) {
             var newProject = Project.CreateProject(ownerId,name, description, state);
             ProjectContext.Projects.Add(newProject);
-            ProjectContext.SaveChanges();
-            return newProject;
+            await ProjectContext.SaveChangesAsync(cancellationToken);
+            return  newProject;
         }
 
-        public Project Update(Project project) {
+        public async Task<Project> Update(Project project,CancellationToken cancellationToken) {
 
             var updatedProject = (from p in ProjectContext.Projects where p.Id == project.Id select p).FirstOrDefault();
             updatedProject.Name = project.Name;
@@ -50,7 +53,7 @@ namespace Projects.Domain.Repositories
             updatedProject.State = project.State;
             updatedProject.Description = project.Description;
 
-            ProjectContext.SaveChanges();
+           await ProjectContext.SaveChangesAsync(cancellationToken);
 
             return updatedProject;
 
@@ -65,19 +68,19 @@ namespace Projects.Domain.Repositories
             return true;
         }
 
-        public List<Project> Get_Projects_By_State(string projectState)
+        public async Task<List<Project>> Get_Projects_By_State(string projectState,CancellationToken cancellationToken)
         {
-            var projects = (from p in ProjectContext.Projects where p.State == projectState select p).ToList();
+            var projects = (from p in ProjectContext.Projects where p.State == projectState select p).ToListAsync(cancellationToken);
 
-            return projects;
+            return await projects;
 
         }
 
-        public List<Project> Get_Projects_By_OwnerId(Guid ownerId)
+        public async Task<List<Project>> Get_Projects_By_OwnerId(Guid ownerId,CancellationToken cancellationToken)
         {
-            var projects = (from p in ProjectContext.Projects where p.OwnerId == ownerId select p).ToList();
+            var projects = (from p in ProjectContext.Projects where p.OwnerId == ownerId select p).ToListAsync(cancellationToken);
 
-            return projects;
+            return await projects;
 
         }
 
