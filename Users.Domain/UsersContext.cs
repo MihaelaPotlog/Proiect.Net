@@ -35,7 +35,21 @@ namespace Users.Domain
             modelBuilder.Entity<UserTechnology>().HasKey(t => new { t.UserId, t.TechnologyId });
             modelBuilder.Entity<Technology>().HasData(
                 Technology.CreateTechnology("Java"),
-                Technology.CreateTechnology("JavaScript")
+                Technology.CreateTechnology("JavaScript"),
+                Technology.CreateTechnology(".Net"),
+                Technology.CreateTechnology("C#"),
+                Technology.CreateTechnology("Unity"),
+                Technology.CreateTechnology("Node.js"),
+                Technology.CreateTechnology("Angular"),
+                Technology.CreateTechnology("React"),
+                Technology.CreateTechnology("Vue"),
+                Technology.CreateTechnology("Express"),
+                Technology.CreateTechnology("Swift"),
+                Technology.CreateTechnology("MongoDb"),
+                Technology.CreateTechnology("C++"),
+                Technology.CreateTechnology("Python"),
+                Technology.CreateTechnology("C")
+
             );
         }
     }

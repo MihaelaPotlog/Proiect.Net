@@ -19,10 +19,15 @@ namespace Users.API.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAll(CancellationToken cancellationToken)
+        [HttpGet("data=users")]
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers(CancellationToken cancellationToken)
         {
             return Ok(await _userService.GetUsers(cancellationToken));
+        }
+        [HttpGet("data=technologies")]
+        public async Task<ActionResult<IEnumerable<Technology>>> GetAllTechnologies(CancellationToken cancellationToken)
+        {
+            return Ok(await _userService.GetTechnologies(cancellationToken));
         }
 
         [HttpPost("login")]
@@ -61,7 +66,7 @@ namespace Users.API.Controllers
             if (result != "success")
                 return BadRequest(result);
             else
-                return Ok();
+                return Ok(result);
             
         }
     }
