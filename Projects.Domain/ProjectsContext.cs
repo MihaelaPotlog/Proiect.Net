@@ -12,14 +12,16 @@ namespace Projects.Domain
         public DbSet<ProjectUser> ProjectUsers { get; set; }
 
 
-             public ProjectsContext(DbContextOptions<ProjectsContext> options):base(options)
-               {
-                   
-               }
-        public ProjectsContext()
+
+        public ProjectsContext(DbContextOptions<ProjectsContext> options):base(options)
+
         {
-            Database.EnsureCreated();
+            
         }
+        // public ProjectsContext()
+        // {
+        //     Database.EnsureCreated();
+        // }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
