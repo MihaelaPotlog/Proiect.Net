@@ -17,12 +17,17 @@ namespace Users.Domain.Repositories
             _context = context;
         }
 
-        public async Task<List<User>> GetAll(CancellationToken cancellationToken)
+        public async Task<List<User>> GetAllUsers(CancellationToken cancellationToken)
         {
             return await _context.Users.ToListAsync(cancellationToken);
         }
 
-        public async Task<User> Get(Guid userId, CancellationToken cancellationToken)
+        public async Task<List<Technology>> GetAllTechnologies(CancellationToken cancellationToken)
+        {
+            return await _context.Technologies.ToListAsync(cancellationToken);
+        }
+
+        public async Task<User> GetUser(Guid userId, CancellationToken cancellationToken)
         {
             return await _context.Users.Where( user=> user.Id == userId).FirstOrDefaultAsync(cancellationToken);
         }

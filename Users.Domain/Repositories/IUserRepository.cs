@@ -9,8 +9,9 @@ namespace Users.Domain.Repositories
 {
     public interface IUserRepository
     {
-        Task<List<User>> GetAll(CancellationToken cancellationToken);
-        Task<User> Get(Guid userId, CancellationToken cancellationToken);
+        Task<List<User>> GetAllUsers(CancellationToken cancellationToken);
+        Task<User> GetUser(Guid userId, CancellationToken cancellationToken);
+        Task<List<Technology>> GetAllTechnologies(CancellationToken cancellationToken);
         public Task<User> Update(User user, CancellationToken cancellationToken);
         bool Delete(Guid userId);
         Task<User> GetByEmail(string email, CancellationToken cancellationToken);

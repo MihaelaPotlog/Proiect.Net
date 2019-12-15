@@ -10,7 +10,8 @@ namespace Users.Service
 {
     public interface IUserService
     {
-        Task<IEnumerable<User>> GetUsers(CancellationToken cancellationToken); 
+        Task<IEnumerable<User>> GetUsers(CancellationToken cancellationToken);
+        Task<IEnumerable<Technology>> GetTechnologies(CancellationToken cancellationToken);
         Task<User> LoginUser(LoginUserDto request, CancellationToken cancellationToken);
         Task<string> RegisterUser(CreateUserDto request, CancellationToken cancellationToken);
         Task<string> ModifyUser(ModifyUserDto request, CancellationToken cancellationToken);

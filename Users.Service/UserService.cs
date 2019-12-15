@@ -22,7 +22,11 @@ namespace Users.Service
 
         public async Task<IEnumerable<User>> GetUsers(CancellationToken cancellationToken)
         {
-            return await _userRepository.GetAll(cancellationToken);
+            return await _userRepository.GetAllUsers(cancellationToken);
+        }
+        public async Task<IEnumerable<Technology>> GetTechnologies(CancellationToken cancellationToken)
+        {
+            return await _userRepository.GetAllTechnologies(cancellationToken);
         }
 
         public async Task<User> LoginUser(LoginUserDto request, CancellationToken cancellationToken)
@@ -47,6 +51,7 @@ namespace Users.Service
 
         public async Task<string> RegisterUser(CreateUserDto request, CancellationToken cancellationToken)
         {
+          
             CreateUserDtoValidator dtoValidator = new CreateUserDtoValidator(_userRepository);
             var result = await dtoValidator.ValidateAsync(request, cancellationToken);
 
@@ -54,6 +59,7 @@ namespace Users.Service
             {
                 var currentUser = await _userRepository.Add(request.FirstName, request.LastName, request.Username,
                     request.Email, request.Password, cancellationToken);
+                
                 await _userRepository.AddUserTechnologyLinks(request.KnownTechnologies, currentUser, cancellationToken);
 
                 return "success";
@@ -64,7 +70,7 @@ namespace Users.Service
 
         public async Task<string> ModifyUser(ModifyUserDto request, CancellationToken cancellationToken)
         {
-            User modifiedUser = await _userRepository.Get(request.Id, cancellationToken);
+            User modifiedUser = await _userRepository.GetUser(request.Id, cancellationToken);
             if (modifiedUser == null)
                 return "invalid id";
             ModifyUserDtoValidator modifyUserValidator = new ModifyUserDtoValidator(_userRepository);
