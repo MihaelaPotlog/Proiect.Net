@@ -2,7 +2,8 @@
 
 namespace Projects.Service
 {
-    public class Class1
+    public class ProjectService:IProjectService
     {
+
     }
 }

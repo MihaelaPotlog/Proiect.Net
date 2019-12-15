@@ -6,10 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Projects.Domain;
+using Projects.Domain.Repositories;
+using Projects.Service;
 
 namespace Projects.API
 {
@@ -26,6 +30,11 @@ namespace Projects.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddScoped<IProjectService,ProjectService>();
+            services.AddScoped<IProjectRepository,ProjectRepository>();
+            services.AddDbContext<ProjectsContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("ProjectsDatabase")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
