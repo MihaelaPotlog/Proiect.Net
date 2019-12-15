@@ -44,6 +44,12 @@ namespace Projects.Domain.Repositories
             return  newProject;
         }
 
+        public async Task Add(Project project, CancellationToken cancellationToken)
+        {
+            ProjectContext.Projects.Add(project);
+            await ProjectContext.SaveChangesAsync(cancellationToken);
+        }
+
         public async Task<Project> Update(Project project,CancellationToken cancellationToken) {
 
             var updatedProject = (from p in ProjectContext.Projects where p.Id == project.Id select p).FirstOrDefault();
@@ -100,6 +106,18 @@ namespace Projects.Domain.Repositories
 
         }
 
+        public async Task<Technology> GetTechnologyByName(string name)
+        {
+            Technology wantedTechnology =await  ProjectContext.Technologies.FirstOrDefaultAsync(technology => technology.Name == name);
+            return wantedTechnology;
+        }
+
+        public async Task AddProjectTechnology(Project project, Technology technology, CancellationToken cancellationToken)
+        {
+            ProjectTechnology projectTechnologyLink = ProjectTechnology.CreateProjectTechnology(project, technology);
+            ProjectContext.ProjectTechnologies.Add(projectTechnologyLink);
+            await ProjectContext.SaveChangesAsync(cancellationToken);
+        }
     }
 
 }
