@@ -5,8 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<< Updated upstream
     <Folder Include="Migrations\" />
     <Folder Include="Repositories\" />
+=======
+    <Compile Remove="Migrations\20191213123357_InitialCreate.cs" />
+    <Compile Remove="Migrations\20191213123357_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20191213130429_AddOwnerId.cs" />
+    <Compile Remove="Migrations\20191213130429_AddOwnerId.Designer.cs" />
+    <Compile Remove="Migrations\20191213131148_InitialCreate.cs" />
+    <Compile Remove="Migrations\20191213131148_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20191215102518_populateTech.cs" />
+    <Compile Remove="Migrations\20191215102518_populateTech.Designer.cs" />
+    <Compile Remove="Migrations\20191215102913_populateTech.cs" />
+    <Compile Remove="Migrations\20191215102913_populateTech.Designer.cs" />
+>>>>>>> Stashed changes
   </ItemGroup>
 
   <ItemGroup>

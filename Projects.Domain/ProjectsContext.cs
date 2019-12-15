@@ -12,10 +12,10 @@ namespace Projects.Domain
         public DbSet<ProjectUser> ProjectUsers { get; set; }
 
 
-        //        public ProjectsDatabaseContext(DbContextOptions<ProjectsDatabaseContext> options):base(options)
-        //        {
-        //            
-        //        }
+        public ProjectsContext(DbContextOptions<ProjectsContext> options) : base(options)
+        {
+
+        }
         public ProjectsContext()
         {
             Database.EnsureCreated();
@@ -31,6 +31,24 @@ namespace Projects.Domain
         {
             modelBuilder.Entity<ProjectUser>().HasKey(t => new { t.ProjectId, t.UserId });
             modelBuilder.Entity<ProjectTechnology>().HasKey(t => new { t.ProjectId, t.TechnologieId });
+            modelBuilder.Entity<Technology>().HasData(
+             Technology.CreateTechnology("Java"),
+             Technology.CreateTechnology("JavaScript"),
+             Technology.CreateTechnology(".Net"),
+             Technology.CreateTechnology("C#"),
+             Technology.CreateTechnology("Unity"),
+             Technology.CreateTechnology("Node.js"),
+             Technology.CreateTechnology("Angular"),
+             Technology.CreateTechnology("React"),
+             Technology.CreateTechnology("Vue"),
+             Technology.CreateTechnology("Express"),
+             Technology.CreateTechnology("Swift"),
+             Technology.CreateTechnology("MongoDb"),
+             Technology.CreateTechnology("C++"),
+             Technology.CreateTechnology("Python"),
+             Technology.CreateTechnology("C")
+
+);
         }
     }
 }

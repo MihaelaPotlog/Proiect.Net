@@ -10,10 +10,17 @@ namespace Projects.Domain.Models
         public string Name { get; set; }
         public List<ProjectTechnology> ProjectTechnologies { get; set; }
 
-        public Technology()
+       private Technology()
         {
             Id = Guid.NewGuid();
             ProjectTechnologies = new List<ProjectTechnology>();
+        }
+        public static Technology CreateTechnology(string name)
+        {
+            return new Technology()
+            {
+                Name = name
+            };
         }
     }
 }
