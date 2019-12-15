@@ -19,13 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Projects.Service", "Project
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Projects.API", "Projects.API\Projects.API.csproj", "{9B3FBE07-03CD-4A8A-9E92-89B91C37A840}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectRepositoryTests", "ProjectRepositoryTests\ProjectRepositoryTests.csproj", "{7597243E-6BDD-4176-A549-311726E62E4F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{4F995294-0157-4233-8D05-CE4F2E543EC1} = {4F995294-0157-4233-8D05-CE4F2E543EC1}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectRepositoryConsoleApp", "ProjectRepositoryConsoleApp\ProjectRepositoryConsoleApp.csproj", "{7FBE66D7-EBB9-4C7A-B36C-1B8DE15DEB23}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,14 +49,6 @@ Global
 		{9B3FBE07-03CD-4A8A-9E92-89B91C37A840}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B3FBE07-03CD-4A8A-9E92-89B91C37A840}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B3FBE07-03CD-4A8A-9E92-89B91C37A840}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7597243E-6BDD-4176-A549-311726E62E4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7597243E-6BDD-4176-A549-311726E62E4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7597243E-6BDD-4176-A549-311726E62E4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7597243E-6BDD-4176-A549-311726E62E4F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7FBE66D7-EBB9-4C7A-B36C-1B8DE15DEB23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7FBE66D7-EBB9-4C7A-B36C-1B8DE15DEB23}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7FBE66D7-EBB9-4C7A-B36C-1B8DE15DEB23}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7FBE66D7-EBB9-4C7A-B36C-1B8DE15DEB23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
