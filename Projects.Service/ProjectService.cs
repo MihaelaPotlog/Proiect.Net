@@ -21,6 +21,9 @@ namespace Projects.Service
             Project createdProject = Project.CreateProject(request.OwnerId,request.Name, request.Description, request.State);
             await _projectRepository.Add(createdProject, cancellationToken);
 
+            ProjectUser  projectUserLink = ProjectUser.CreateProjectUser(createdProject.Id, request.OwnerId, createdProject);
+            await _projectRepository.AddProjectUser(projectUserLink, cancellationToken);
+
             foreach (string technologyName in request.Technologies)
             {
                 Technology technology = await _projectRepository.GetTechnologyByName(technologyName);
