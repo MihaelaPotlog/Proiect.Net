@@ -118,6 +118,12 @@ namespace Projects.Domain.Repositories
             ProjectContext.ProjectTechnologies.Add(projectTechnologyLink);
             await ProjectContext.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task AddProjectUser(ProjectUser projectUserLink, CancellationToken cancellationToken)
+        {
+            ProjectContext.ProjectUsers.Add(projectUserLink);
+            await ProjectContext.SaveChangesAsync(cancellationToken);
+        }
     }
 
 }
