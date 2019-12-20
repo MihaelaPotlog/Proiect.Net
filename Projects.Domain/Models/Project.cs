@@ -14,12 +14,15 @@ namespace Projects.Domain.Models
 
         public List<ProjectTechnology> ProjectTechnologies { get;  set; }
         public List<ProjectUser> ProjectUsers { get;  set; }
+        public List<Invitation> Invitations { get; set; }
+
 
         private Project()
         {
             Id = Guid.NewGuid();
             ProjectTechnologies = new List<ProjectTechnology>();
             ProjectUsers = new List<ProjectUser>();
+            Invitations = new List<Invitation>();
         }
         public static Project CreateProject(Guid ownerId,string name, string description, string state)
         {

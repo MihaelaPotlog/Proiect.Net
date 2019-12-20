@@ -10,6 +10,7 @@ namespace Projects.Domain
         public DbSet<Technology> Technologies { get; set; }
         public DbSet<ProjectTechnology> ProjectTechnologies { get; set; }
         public DbSet<ProjectUser> ProjectUsers { get; set; }
+        public DbSet<Invitation> Invitations { get; set; }
 
 
 
@@ -18,10 +19,10 @@ namespace Projects.Domain
         {
             
         }
-        // public ProjectsContext()
-        // {
-        //     Database.EnsureCreated();
-        // }
+        public ProjectsContext()
+        {
+            Database.EnsureCreated();
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,6 +34,8 @@ namespace Projects.Domain
         {
             modelBuilder.Entity<ProjectUser>().HasKey(t => new { t.ProjectId, t.UserId });
             modelBuilder.Entity<ProjectTechnology>().HasKey(t => new { t.ProjectId, t.TechnologieId });
+            modelBuilder.Entity<Invitation>().HasKey(invitation => new { invitation.ProjectId, invitation.SenderId, invitation.ReceiverId});
+
             modelBuilder.Entity<Technology>().HasData(
                Technology.CreateTechnology("Java"),
                Technology.CreateTechnology("JavaScript"),
