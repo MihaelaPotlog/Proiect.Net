@@ -5,7 +5,6 @@ namespace Projects.Domain.Models
 {
     public class Invitation
     {
-        public Guid Id { get; private set; }
         public string Status { get; private set; }
 
         public Guid ProjectId { get; private set; }
@@ -20,12 +19,12 @@ namespace Projects.Domain.Models
            
         }
 
-        public static Invitation CreateInvitation(Guid id, Guid projectId, Project project, Guid senderId, Guid receiverId)
+        public static Invitation CreateInvitation( Guid projectId, Project project, Guid senderId, Guid receiverId)
         {
 
             return new Invitation()
             {
-                Id = id,
+               
                 Status = InvitationStatus.Pending,
                 ProjectId = projectId,
                 Project = project,

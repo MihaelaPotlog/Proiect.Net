@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Projects.Domain;
 using Projects.Domain.Repositories;
 using Projects.Service;
@@ -34,6 +35,9 @@ namespace Projects.API
             services.AddScoped<IProjectRepository,ProjectRepository>();
             services.AddDbContext<ProjectsContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ProjectsDatabase")));
+            services.AddMvc(option => option.EnableEndpointRouting = false)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
         }
 
