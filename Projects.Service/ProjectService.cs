@@ -4,6 +4,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Projects.Domain.Repositories;
+using Projects.Service.Common;
+using Projects.Service.Validators;
 
 namespace Projects.Service
 {
@@ -14,6 +16,24 @@ namespace Projects.Service
         public ProjectService(IProjectRepository projectRepository)
         {
             _projectRepository = projectRepository;
+        }
+
+        public async Task<string> CreateInvitation(CreateInvitationDto request, CancellationToken cancellationToken)
+        {
+            Project selectedProject = await _projectRepository.Get(request.ProjectId, cancellationToken);
+            if (selectedProject == null)
+                return ErrorMessages.InvalidProjectId;
+
+            CreateInvitationDtoValidator dtoValidator = new CreateInvitationDtoValidator(_projectRepository);
+            var validationResult = await dtoValidator.ValidateAsync(request, cancellationToken);
+
+            if (validationResult.IsValid == false)
+                return validationResult.ToString();
+
+            Invitation newInvitation = Invitation.CreateInvitation(request.ProjectId, selectedProject, selectedProject.OwnerId, request.ReceiverId);
+            await _projectRepository.AddInvitation(newInvitation, cancellationToken);
+
+            return "success";
         }
 
         public async Task<Project> CreateProject(CreateProjectDto request, CancellationToken cancellationToken)

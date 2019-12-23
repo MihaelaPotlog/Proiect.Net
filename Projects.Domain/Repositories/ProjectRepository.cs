@@ -124,6 +124,23 @@ namespace Projects.Domain.Repositories
             ProjectContext.ProjectUsers.Add(projectUserLink);
             await ProjectContext.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task<ProjectUser> GetProjectUser(Guid projectId, Guid userId)
+        {
+            return await ProjectContext.ProjectUsers.FindAsync(projectId, userId);
+        }
+
+        public async Task AddInvitation(Invitation invitation, CancellationToken cancellationToken)
+        {
+            ProjectContext.Invitations.Add(invitation);
+            await ProjectContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<Invitation> GetInvitation(Guid projectId, Guid senderId, Guid receiverId)
+        {
+            return await ProjectContext.Invitations.FindAsync(projectId, senderId, receiverId);
+            
+        }
     }
 
 }

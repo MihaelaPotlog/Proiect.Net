@@ -11,5 +11,6 @@ namespace Projects.Service
     public interface IProjectService
     {
         Task<Project> CreateProject(CreateProjectDto request, CancellationToken cancellationToken);
+        Task<string> CreateInvitation(CreateInvitationDto request, CancellationToken cancellationToken);
     }
 }

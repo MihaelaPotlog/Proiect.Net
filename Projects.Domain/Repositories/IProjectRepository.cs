@@ -25,6 +25,10 @@ namespace Projects.Domain.Repositories
         
 
         public List<Project> Get_Projects_By_Description(string projectDescription);
+        Task AddInvitation(Invitation invitation, CancellationToken cancellationToken);
+        public Task<ProjectUser> GetProjectUser(Guid projectId, Guid userId);
+
+        public Task<Invitation> GetInvitation(Guid projectId, Guid senderId, Guid receiverId);
 
     }
 }
