@@ -10,7 +10,9 @@ namespace Projects.Service
 {
     public interface IProjectService
     {
-        Task<Project> CreateProject(CreateProjectDto request, CancellationToken cancellationToken);
+        Task<ProjectDto> CreateProject(CreateProjectDto request, CancellationToken cancellationToken);
+        Task<List<ProjectDto>> GetProjects(CancellationToken cancellationToken);
+
         Task<string> CreateInvitation(CreateInvitationDto request, CancellationToken cancellationToken);
     }
 }

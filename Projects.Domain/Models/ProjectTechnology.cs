@@ -10,6 +10,7 @@ namespace Projects.Domain.Models
         public Guid TechnologieId { get; private set; }
         public Project Project { get; private set; }
         public Technology Technologie { get; private set; }
+        
 
         private ProjectTechnology()
         {

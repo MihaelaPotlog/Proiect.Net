@@ -16,11 +16,20 @@ namespace Projects.Domain.Repositories
         public ProjectRepository(ProjectsContext projectsContext){
             ProjectContext = projectsContext;
             }
-        public async Task<List<Project>> GetAll(CancellationToken cancellationToken) {
-            //var db = new ProjectsContext();
-            var projects = (from p in ProjectContext.Projects select p).ToListAsync(cancellationToken);
-            return await projects;
+        // public async Task<List<Project>> GetAll(CancellationToken cancellationToken) {
+        //     //var db = new ProjectsContext();
+        //     var projects = (from p in ProjectContext.Projects select p).ToListAsync(cancellationToken);
+        //     return await projects;
+        // }
+        public Task<List<Project>> GetAll(CancellationToken cancellationToken)
+        {
+            return ProjectContext.Projects
+                .Include(project => project.ProjectUsers)
+                .Include(project => project.ProjectTechnologies)
+                    .ThenInclude(projectTechnology => projectTechnology.Technologie)
+                .ToListAsync(cancellationToken);
         }
+
         public bool Delete(Guid projectId) {
 
             if (VerifyIf_Project_Exists(projectId) == false)
@@ -141,6 +150,8 @@ namespace Projects.Domain.Repositories
             return await ProjectContext.Invitations.FindAsync(projectId, senderId, receiverId);
             
         }
+
+        
     }
 
 }

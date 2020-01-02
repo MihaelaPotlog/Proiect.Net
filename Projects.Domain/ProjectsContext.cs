@@ -15,9 +15,7 @@ namespace Projects.Domain
 
 
         public ProjectsContext(DbContextOptions<ProjectsContext> options):base(options)
-
         {
-            
         }
         public ProjectsContext()
         {
@@ -32,6 +30,7 @@ namespace Projects.Domain
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+           
             modelBuilder.Entity<ProjectUser>().HasKey(t => new { t.ProjectId, t.UserId });
             modelBuilder.Entity<ProjectTechnology>().HasKey(t => new { t.ProjectId, t.TechnologieId });
             modelBuilder.Entity<Invitation>().HasKey(invitation => new { invitation.ProjectId, invitation.SenderId, invitation.ReceiverId});

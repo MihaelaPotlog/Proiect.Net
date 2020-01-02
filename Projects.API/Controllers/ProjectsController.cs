@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Projects.Domain.Models;
@@ -17,18 +18,26 @@ namespace Projects.API.Controllers
     public class ProjectsController : ControllerBase
     {
         private readonly IProjectService _projectService;
-
         
 
         public ProjectsController(IProjectService projectService)
         {
-            _projectService = projectService; 
+            _projectService = projectService;
+            
         }
 
         [HttpPost]
-        public async Task<ActionResult<Project>> CreateProject(CreateProjectDto dto, CancellationToken cancellationToken)
+        public async Task<ActionResult<ProjectDto>> CreateProject(CreateProjectDto dto, CancellationToken cancellationToken)
         {
-            return await _projectService.CreateProject(dto, cancellationToken);
+            var createdProject =  await _projectService.CreateProject(dto, cancellationToken);
+            return createdProject;
+
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<ProjectDto>>> GetProjects(CancellationToken cancellationToken)
+        {
+            return await  _projectService.GetProjects(cancellationToken);
         }
 
         [HttpPost("invitations")]

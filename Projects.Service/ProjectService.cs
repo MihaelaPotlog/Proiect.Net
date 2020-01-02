@@ -3,19 +3,23 @@ using Projects.Service.DTOs;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Projects.Domain.Repositories;
 using Projects.Service.Common;
 using Projects.Service.Validators;
+using System.Collections.Generic;
 
 namespace Projects.Service
 {
     public class ProjectService : IProjectService
     {
         private readonly IProjectRepository _projectRepository;
+        private readonly IMapper _mapper;
 
-        public ProjectService(IProjectRepository projectRepository)
+        public ProjectService(IProjectRepository projectRepository, IMapper mapper)
         {
             _projectRepository = projectRepository;
+            _mapper = mapper;
         }
 
         public async Task<string> CreateInvitation(CreateInvitationDto request, CancellationToken cancellationToken)
@@ -36,7 +40,7 @@ namespace Projects.Service
             return "success";
         }
 
-        public async Task<Project> CreateProject(CreateProjectDto request, CancellationToken cancellationToken)
+        public async Task<ProjectDto> CreateProject(CreateProjectDto request, CancellationToken cancellationToken)
         {
             Project createdProject = Project.CreateProject(request.OwnerId,request.Name, request.Description, request.State);
             await _projectRepository.Add(createdProject, cancellationToken);
@@ -50,7 +54,14 @@ namespace Projects.Service
                 await _projectRepository.AddProjectTechnology(createdProject, technology, cancellationToken);
             }
 
-            return createdProject;
+            return _mapper.Map<ProjectDto>(createdProject);
+        }
+
+        public async Task<List<ProjectDto>> GetProjects(CancellationToken cancellationToken)
+        {
+            List<Project> projects = await _projectRepository.GetAll(cancellationToken);
+           
+            return _mapper.Map<List<ProjectDto>>(projects);
         }
     }
 }
