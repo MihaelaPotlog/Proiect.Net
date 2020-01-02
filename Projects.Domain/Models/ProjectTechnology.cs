@@ -10,7 +10,7 @@ namespace Projects.Domain.Models
         public Guid TechnologieId { get; private set; }
         public Project Project { get; private set; }
         public Technology Technologie { get; private set; }
-        public string TechnologyName { get; private set; }
+        
 
         private ProjectTechnology()
         {
@@ -21,7 +21,6 @@ namespace Projects.Domain.Models
             ProjectTechnology projectTechnology = new ProjectTechnology();
             projectTechnology.Project = project;
             projectTechnology.Technologie = technology;
-            projectTechnology.TechnologyName = technology.Name;
             return projectTechnology;
         }
     }

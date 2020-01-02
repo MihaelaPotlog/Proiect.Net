@@ -12,11 +12,10 @@ namespace Projects.Service.Mapping
     {
         public DomainToDtoProjectProfile()
         {
-            // src.ProjectTechnologies.Select(elem => elem.Technologie.Name)))
             CreateMap<Project, ProjectDto>()
                 .ForMember(dest => dest.Technologies, opt =>
                     opt.MapFrom(src =>
-                        src.ProjectTechnologies.Select(elem =>  elem.TechnologyName)))
+                        src.ProjectTechnologies.Select(elem =>  elem.Technologie.Name)))
                 .ForMember(dest => dest.CollaboratorsId, opt =>
                     opt.MapFrom(src => src.ProjectUsers.Select(elem => elem.UserId)));
         }

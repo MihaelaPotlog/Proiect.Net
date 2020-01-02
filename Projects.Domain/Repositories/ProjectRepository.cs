@@ -26,7 +26,7 @@ namespace Projects.Domain.Repositories
             return ProjectContext.Projects
                 .Include(project => project.ProjectUsers)
                 .Include(project => project.ProjectTechnologies)
-                    // .ThenInclude(projectTechnology => projectTechnology.Technologie)
+                    .ThenInclude(projectTechnology => projectTechnology.Technologie)
                 .ToListAsync(cancellationToken);
         }
 
