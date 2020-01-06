@@ -24,6 +24,11 @@ namespace Users.Service
         {
             return await _userRepository.GetAllUsers(cancellationToken);
         }
+        public async Task<User>GetUser(Guid Id,CancellationToken cancellationToken)
+        {
+            return await _userRepository.GetUser(Id,cancellationToken);
+
+        }
         public async Task<IEnumerable<Technology>> GetTechnologies(CancellationToken cancellationToken)
         {
             return await _userRepository.GetAllTechnologies(cancellationToken);

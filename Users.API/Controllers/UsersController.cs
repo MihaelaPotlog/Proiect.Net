@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,12 @@ namespace Users.API.Controllers
         {
             return Ok(await _userService.GetUsers(cancellationToken));
         }
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<User>> GetUserById(Guid Id,CancellationToken cancellationToken)
+        {
+            User user = await _userService.GetUser(Id, cancellationToken);
+            return Ok(user);
+        }
         [HttpGet("data=technologies")]
         public async Task<ActionResult<IEnumerable<Technology>>> GetAllTechnologies(CancellationToken cancellationToken)
         {
@@ -38,7 +45,7 @@ namespace Users.API.Controllers
             {
                 if (user != null)
                 {
-                    return Ok();
+                    return Ok(user.Id);
                 }
                 else
                 {

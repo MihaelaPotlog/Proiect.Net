@@ -15,5 +15,6 @@ namespace Users.Service
         Task<User> LoginUser(LoginUserDto request, CancellationToken cancellationToken);
         Task<string> RegisterUser(CreateUserDto request, CancellationToken cancellationToken);
         Task<string> ModifyUser(ModifyUserDto request, CancellationToken cancellationToken);
+        Task<User> GetUser(Guid Id, CancellationToken cancellationToken);
     }
 }
