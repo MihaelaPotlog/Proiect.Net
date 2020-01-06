@@ -40,6 +40,29 @@ namespace Projects.Service
             return "success";
         }
 
+        public async Task<List<Invitation>> GetUserInvitations(GetUserInvitationDto request, CancellationToken cancellationToken)
+        {
+           var invitations = await _projectRepository.GetaAllInvitations(request.UserId, cancellationToken);
+
+            if(invitations.Count == 0)
+                return null;
+            else
+            {
+                return invitations;
+            }
+        }
+
+        public async Task<List<Invitation>> GetOwnerRequests(GetOwnerRequestDto request, CancellationToken cancellationToken)
+        {
+            var requests = await _projectRepository.GetaAllInvitations(request.OwnerId, cancellationToken);
+
+            if (requests.Count == 0)
+                return null;
+            else
+            {
+                return requests;
+            }
+        }
         public async Task<ProjectDto> CreateProject(CreateProjectDto request, CancellationToken cancellationToken)
         {
             Project createdProject = Project.CreateProject(request.OwnerId,request.Name, request.Description, request.State);

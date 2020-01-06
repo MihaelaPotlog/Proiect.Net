@@ -14,5 +14,9 @@ namespace Projects.Service
         Task<List<ProjectDto>> GetProjects(CancellationToken cancellationToken);
 
         Task<string> CreateInvitation(CreateInvitationDto request, CancellationToken cancellationToken);
+
+        Task<List<Invitation>> GetUserInvitations(GetUserInvitationDto request, CancellationToken cancellationToken);
+
+        Task<List<Invitation>> GetOwnerRequests(GetOwnerRequestDto request, CancellationToken cancellationToken);
     }
 }

@@ -30,5 +30,7 @@ namespace Projects.Domain.Repositories
 
         public Task<Invitation> GetInvitation(Guid projectId, Guid senderId, Guid receiverId);
 
+        public Task<List<Invitation>> GetaAllInvitations(Guid userId,CancellationToken cencellationToken);
+
     }
 }
