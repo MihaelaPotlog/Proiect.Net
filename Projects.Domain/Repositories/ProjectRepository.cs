@@ -151,7 +151,12 @@ namespace Projects.Domain.Repositories
             
         }
 
-        
+        public async Task<List<Invitation>> GetaAllInvitations(Guid id,CancellationToken cancellationToken)
+        {
+            var invitations = (from i in ProjectContext.Invitations where i.ReceiverId == id select i).ToListAsync(cancellationToken);
+
+            return await invitations;
+        }
     }
 
 }

@@ -49,5 +49,30 @@ namespace Projects.API.Controllers
            
             return Ok();
         }
+
+        [HttpGet("invitations")]
+
+        public async Task<ActionResult<List<Invitation>>> GetUserInvitations(GetUserInvitationDto dto,CancellationToken cancellationToken)
+        {
+            var result = await _projectService.GetUserInvitations(dto, cancellationToken);
+            if (result == null)
+                return BadRequest("nothing");
+            else { 
+                return Ok(result); 
+            }
+        }
+
+        [HttpGet("requests")]
+
+        public async Task<ActionResult<List<Invitation>>> GetOwnerRequests(GetOwnerRequestDto dto, CancellationToken cancellationToken)
+        {
+            var result = await _projectService.GetOwnerRequests(dto, cancellationToken);
+            if (result == null)
+                return BadRequest("nothing");
+            else
+            {
+                return Ok(result);
+            }
+        }
     }
 }
