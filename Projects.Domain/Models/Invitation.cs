@@ -6,6 +6,7 @@ namespace Projects.Domain.Models
     public class Invitation
     {
         public string Status { get; private set; }
+        public int InvitationType { get; private set; }
 
         public Guid ProjectId { get; private set; }
         public Project Project { get; private set; }
@@ -19,7 +20,7 @@ namespace Projects.Domain.Models
            
         }
 
-        public static Invitation CreateInvitation( Guid projectId, Project project, Guid senderId, Guid receiverId)
+        public static Invitation CreateInvitation( Guid projectId, Project project, Guid senderId, Guid receiverId, int invitationType)
         {
 
             return new Invitation()
@@ -29,7 +30,8 @@ namespace Projects.Domain.Models
                 ProjectId = projectId,
                 Project = project,
                 SenderId = senderId,
-                ReceiverId = receiverId
+                ReceiverId = receiverId,
+                InvitationType = invitationType
             };
         }
 
