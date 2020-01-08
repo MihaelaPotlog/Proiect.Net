@@ -8,6 +8,7 @@ using Projects.Domain.Repositories;
 using Projects.Service.Common;
 using Projects.Service.Validators;
 using System.Collections.Generic;
+using Projects.Domain.Common;
 
 namespace Projects.Service
 {
@@ -34,7 +35,7 @@ namespace Projects.Service
             if (validationResult.IsValid == false)
                 return validationResult.ToString();
 
-            Invitation newInvitation = Invitation.CreateInvitation(request.ProjectId, selectedProject, selectedProject.OwnerId, request.ReceiverId);
+            Invitation newInvitation = Invitation.CreateInvitation(request.ProjectId, selectedProject, selectedProject.OwnerId, request.ReceiverId, InvitationType.OwnerToUser);
             await _projectRepository.AddInvitation(newInvitation, cancellationToken);
 
             return "success";
