@@ -25,12 +25,14 @@ namespace Users.API.Controllers
         {
             return Ok(await _userService.GetUsers(cancellationToken));
         }
+
         [HttpGet("{Id}")]
-        public async Task<ActionResult<User>> GetUserById(Guid Id,CancellationToken cancellationToken)
+        public async Task<ActionResult<User>> GetUserById(Guid Id, CancellationToken cancellationToken)
         {
             User user = await _userService.GetUser(Id, cancellationToken);
             return Ok(user);
         }
+
         [HttpGet("data=technologies")]
         public async Task<ActionResult<IEnumerable<Technology>>> GetAllTechnologies(CancellationToken cancellationToken)
         {
@@ -57,6 +59,7 @@ namespace Users.API.Controllers
                 return StatusCode(500);
             }
         }
+
         [HttpPost]
         public async Task<ActionResult<string>> CreateUser(CreateUserDto dto, CancellationToken cancellationToken)
         {
@@ -66,6 +69,7 @@ namespace Users.API.Controllers
             else
                 return BadRequest(raspuns);
         }
+
         [HttpPut]
         public async Task<ActionResult> ModifyUser(ModifyUserDto dto, CancellationToken cancellationToken)
         {
@@ -74,9 +78,9 @@ namespace Users.API.Controllers
                 return BadRequest(result);
             else
                 return Ok(result);
-            
+
         }
     }
 
-  
+
 }

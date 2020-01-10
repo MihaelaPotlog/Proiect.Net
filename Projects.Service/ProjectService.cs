@@ -1,6 +1,5 @@
 ﻿using Projects.Domain.Models;
 using Projects.Service.DTOs;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;

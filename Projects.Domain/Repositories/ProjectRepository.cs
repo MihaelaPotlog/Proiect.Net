@@ -1,9 +1,7 @@
 ﻿using Projects.Domain.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
