@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Projects.Domain.Common
+﻿namespace Projects.Domain.Common
 {
     public static class InvitationType
     {

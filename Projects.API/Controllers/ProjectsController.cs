@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Projects.Domain.Models;
 using Projects.Service;
-using Projects.Service.Common;
 using Projects.Service.DTOs;
 
 namespace Projects.API.Controllers
@@ -51,7 +46,6 @@ namespace Projects.API.Controllers
         }
 
         [HttpGet("invitations")]
-
         public async Task<ActionResult<List<Invitation>>> GetUserInvitations(GetUserInvitationDto dto,CancellationToken cancellationToken)
         {
             var result = await _projectService.GetUserInvitations(dto, cancellationToken);
@@ -63,7 +57,6 @@ namespace Projects.API.Controllers
         }
 
         [HttpGet("requests")]
-
         public async Task<ActionResult<List<Invitation>>> GetOwnerRequests(GetOwnerRequestDto dto, CancellationToken cancellationToken)
         {
             var result = await _projectService.GetOwnerRequests(dto, cancellationToken);
