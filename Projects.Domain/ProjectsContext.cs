@@ -32,7 +32,7 @@ namespace Projects.Domain
            
             modelBuilder.Entity<ProjectUser>().HasKey(t => new { t.ProjectId, t.UserId });
             modelBuilder.Entity<ProjectTechnology>().HasKey(t => new { t.ProjectId, t.TechnologieId });
-            modelBuilder.Entity<Invitation>().HasKey(invitation => new { invitation.ProjectId, invitation.SenderId, invitation.ReceiverId});
+            modelBuilder.Entity<Invitation>().HasKey(invitation => new { invitation.ProjectId, invitation.CollaboratorId, invitation.OwnerId});
 
             modelBuilder.Entity<Technology>().HasData(
                Technology.CreateTechnology("Java"),
