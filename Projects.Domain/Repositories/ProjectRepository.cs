@@ -143,15 +143,15 @@ namespace Projects.Domain.Repositories
             await ProjectContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<Invitation> GetInvitation(Guid projectId, Guid senderId, Guid receiverId)
+        public async Task<Invitation> GetInvitation(Guid projectId, Guid collaboratorId, Guid ownerId)
         {
-            return await ProjectContext.Invitations.FindAsync(projectId, senderId, receiverId);
+            return await ProjectContext.Invitations.FindAsync(projectId, collaboratorId, ownerId);
             
         }
 
         public async Task<List<Invitation>> GetaAllInvitations(Guid id,CancellationToken cancellationToken)
         {
-            var invitations = (from i in ProjectContext.Invitations where i.ReceiverId == id select i).ToListAsync(cancellationToken);
+            var invitations = (from i in ProjectContext.Invitations where i.CollaboratorId == id select i).ToListAsync(cancellationToken);
 
             return await invitations;
         }

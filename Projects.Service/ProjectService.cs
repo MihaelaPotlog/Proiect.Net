@@ -34,7 +34,7 @@ namespace Projects.Service
             if (validationResult.IsValid == false)
                 return validationResult.ToString();
 
-            Invitation newInvitation = Invitation.CreateInvitation(request.ProjectId, selectedProject, selectedProject.OwnerId, request.ReceiverId, InvitationType.OwnerToUser);
+            Invitation newInvitation = Invitation.CreateInvitation(request.ProjectId, selectedProject,request.CollaboratorId, request.OwnerId, request.InvitationType);
             await _projectRepository.AddInvitation(newInvitation, cancellationToken);
 
             return "success";
