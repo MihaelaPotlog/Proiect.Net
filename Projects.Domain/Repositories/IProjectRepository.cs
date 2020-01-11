@@ -29,7 +29,9 @@ namespace Projects.Domain.Repositories
 
         public Task<Invitation> GetInvitation(Guid projectId, Guid senderId, Guid receiverId);
 
-        public Task<List<Invitation>> GetaAllInvitations(Guid userId,CancellationToken cencellationToken);
+        public Task<List<Invitation>> GetaAllInvitationsAsOwner(Guid id,CancellationToken cencellationToken);
+
+        public Task<List<Invitation>> GetaAllInvitationsAsUser(Guid id, CancellationToken cencellationToken);
 
     }
 }
