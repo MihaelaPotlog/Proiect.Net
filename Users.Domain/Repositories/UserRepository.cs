@@ -18,7 +18,10 @@ namespace Users.Domain.Repositories
 
         public async Task<List<User>> GetAllUsers(CancellationToken cancellationToken)
         {
-            return await _context.Users.ToListAsync(cancellationToken);
+            return await _context.Users
+                        .Include(user => user.UserTechnologies)
+                            .ThenInclude(userTechnology => userTechnology.Technology)
+                        .ToListAsync(cancellationToken);
         }
 
         public async Task<List<Technology>> GetAllTechnologies(CancellationToken cancellationToken)
@@ -28,7 +31,12 @@ namespace Users.Domain.Repositories
 
         public async Task<User> GetUser(Guid userId, CancellationToken cancellationToken)
         {
-            return await _context.Users.Where( user=> user.Id == userId).FirstOrDefaultAsync(cancellationToken);
+            User user = await _context.Users.Include(user => user.UserTechnologies)
+                                                .ThenInclude(userTechnology => userTechnology.Technology)
+                                            .Where(thisUser => thisUser.Id == userId)
+                                            .FirstOrDefaultAsync(cancellationToken);
+            
+            return user;
         }
 
         public async Task<User> Update(User user, CancellationToken cancellationToken)

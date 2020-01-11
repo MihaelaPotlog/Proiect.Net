@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Users.Domain.Models;
 using Users.Domain.Repositories;
 using Users.Service.DTOs;
@@ -13,19 +14,23 @@ namespace Users.Service
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<User>> GetUsers(CancellationToken cancellationToken)
+        public async Task<IEnumerable<UserDto>> GetUsers(CancellationToken cancellationToken)
         {
-            return await _userRepository.GetAllUsers(cancellationToken);
+            IEnumerable<User> users = await _userRepository.GetAllUsers(cancellationToken);
+            return _mapper.Map<IEnumerable<UserDto>>(users);
         }
-        public async Task<User>GetUser(Guid Id,CancellationToken cancellationToken)
+        public async Task<UserDto>GetUser(Guid Id,CancellationToken cancellationToken)
         {
-            return await _userRepository.GetUser(Id,cancellationToken);
+            User user = await _userRepository.GetUser(Id, cancellationToken);
+            return _mapper.Map<UserDto>(user);
 
         }
         public async Task<IEnumerable<Technology>> GetTechnologies(CancellationToken cancellationToken)

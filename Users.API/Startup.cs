@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,8 @@ namespace Users.API
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddDbContext<UsersContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("UsersDatabase")));
+
+            services.AddAutoMapper(typeof(IUserService));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
