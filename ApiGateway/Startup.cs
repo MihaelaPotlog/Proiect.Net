@@ -26,6 +26,7 @@ namespace ApiGateway
             // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddOcelot(Configuration);
         }
 
@@ -33,6 +34,10 @@ namespace ApiGateway
         public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             await app.UseOcelot();
+            app.UseCors(builder => builder
+                       .AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader());
         }
     }
 }
