@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
+using Projects.Domain.Common;
 
 namespace Projects.Domain.Repositories
 {
@@ -149,9 +150,19 @@ namespace Projects.Domain.Repositories
             
         }
 
-        public async Task<List<Invitation>> GetaAllInvitations(Guid id,CancellationToken cancellationToken)
+        public async Task<List<Invitation>> GetaAllInvitationsAsOwner(Guid id,CancellationToken cancellationToken)
         {
-            var invitations = (from i in ProjectContext.Invitations where i.ReceiverId == id select i).ToListAsync(cancellationToken);
+
+
+            var invitations = (from i in ProjectContext.Invitations where i.ReceiverId == id && i.InvitationType == InvitationType.UserToOwner select i).ToListAsync(cancellationToken);
+
+            return await invitations;
+        }
+        public async Task<List<Invitation>> GetaAllInvitationsAsUser(Guid id, CancellationToken cancellationToken)
+        {
+
+
+            var invitations = (from i in ProjectContext.Invitations where i.ReceiverId == id && i.InvitationType==InvitationType.OwnerToUser select i).ToListAsync(cancellationToken);
 
             return await invitations;
         }

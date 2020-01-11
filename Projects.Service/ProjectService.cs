@@ -42,7 +42,7 @@ namespace Projects.Service
 
         public async Task<List<Invitation>> GetUserInvitations(GetUserInvitationDto request, CancellationToken cancellationToken)
         {
-           var invitations = await _projectRepository.GetaAllInvitations(request.UserId, cancellationToken);
+           var invitations = await _projectRepository.GetaAllInvitationsAsUser(request.UserId, cancellationToken);
 
             if(invitations.Count == 0)
                 return null;
@@ -54,7 +54,7 @@ namespace Projects.Service
 
         public async Task<List<Invitation>> GetOwnerRequests(GetOwnerRequestDto request, CancellationToken cancellationToken)
         {
-            var requests = await _projectRepository.GetaAllInvitations(request.OwnerId, cancellationToken);
+            var requests = await _projectRepository.GetaAllInvitationsAsOwner(request.OwnerId, cancellationToken);
 
             if (requests.Count == 0)
                 return null;
