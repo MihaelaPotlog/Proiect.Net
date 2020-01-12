@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -8,7 +7,6 @@ using Microsoft.Extensions.Options;
 using Users.Domain.Models;
 using Users.Domain.Repositories;
 using Users.Service.DTOs;
-using Users.Service.Validators;
 using Users.Service.DTOs.ResponseDtos;
 
 
@@ -53,11 +51,12 @@ namespace Users.Service
         {
             User currentUser = await _userRepository.GetByEmail(request.Email, cancellationToken);
             if (currentUser == null)
-                return null;
-            var signInResult = await _signInManager.PasswordSignInAsync(currentUser.UserName, password: request.Password, isPersistent: false, lockoutOnFailure: false);
+                return new ErrorResponseDto(ErrorMessages.InvalidEmail);
 
+            var signInResult = await _signInManager.PasswordSignInAsync(currentUser.UserName, password: request.Password, isPersistent: false, lockoutOnFailure: false);
+          
             if (signInResult.Succeeded == false)
-                return new ErrorMessagesDto(ErrorMessages.InvalidCredentials);
+                return new ErrorResponseDto(ErrorMessages.InvalidCredentials);
             else
                 return new LoginResponseDto()
                 {
@@ -73,11 +72,11 @@ namespace Users.Service
             var result = await _userManager.CreateAsync(currentUser, request.Password);
 
             if (result.Succeeded == false)
-                return new ErrorMessagesDto(result.Errors);
+                return new ErrorResponseDto(result.Errors);
 
             await _userRepository.AddUserTechnologyLinks(request.KnownTechnologies, currentUser, cancellationToken);
 
-            return new RegisterResponseDto();
+            return new SuccessResponseDto();
 
         }
 

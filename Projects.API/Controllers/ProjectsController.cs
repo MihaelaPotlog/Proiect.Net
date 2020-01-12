@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Projects.Domain.Models;
 using Projects.Service;
+using Projects.Service.Common;
+using Projects.Service.Constants;
 using Projects.Service.DTOs;
+using Projects.Service.DTOs.RequestsDTOs;
 
 namespace Projects.API.Controllers
 {
@@ -66,6 +70,25 @@ namespace Projects.API.Controllers
             {
                 return Ok(result);
             }
+        }
+        [HttpPost("handleinvitation")]
+        public async Task<ActionResult> HandleInvitation(HandleInvitationDto request, CancellationToken cancellationToken)
+        {
+            string response = await _projectService.HandleInvitation(request, cancellationToken);
+            if (response == SuccessMessages.Success)
+                return Ok(response);
+            else 
+                return BadRequest(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProjectDto>> GetProjectById(Guid id, CancellationToken cancellationToken)
+        {
+            ProjectDto response = await _projectService.GetProject(id, cancellationToken);
+            if (response == null)
+                return BadRequest(ErrorMessages.NonexistentProject);
+
+            return Ok(response);
         }
     }
 }

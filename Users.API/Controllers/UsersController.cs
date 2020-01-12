@@ -20,7 +20,7 @@ namespace Users.API.Controllers
         }
 
         [HttpGet("data=users")]
-        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers(CancellationToken cancellationToken)
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers(CancellationToken cancellationToken)
         {
             return Ok(await _userService.GetUsers(cancellationToken));
         }

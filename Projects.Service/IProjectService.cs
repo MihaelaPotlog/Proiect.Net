@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Projects.Domain.Models;
 using Projects.Service.DTOs;
+using Projects.Service.DTOs.RequestsDTOs;
 
 namespace Projects.Service
 {
@@ -16,5 +18,7 @@ namespace Projects.Service
         Task<List<Invitation>> GetUserInvitations(GetUserInvitationDto request, CancellationToken cancellationToken);
 
         Task<List<Invitation>> GetOwnerRequests(GetOwnerRequestDto request, CancellationToken cancellationToken);
+        Task<string> HandleInvitation(HandleInvitationDto request, CancellationToken cancellationToken);
+        Task<ProjectDto> GetProject(Guid id, CancellationToken cancellationToken);
     }
 }

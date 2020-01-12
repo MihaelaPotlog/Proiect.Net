@@ -31,7 +31,7 @@ namespace Users.Service.DTOs
                 audience: audience.Aud,
                 claims: claims,
                 notBefore: now,
-                expires: now.Add(TimeSpan.FromMinutes(40)),
+                expires: now.Add(TimeSpan.FromMinutes(60)),
                 signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
             );
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
@@ -39,7 +39,7 @@ namespace Users.Service.DTOs
             return new Token()
             {
                 AccessToken = encodedJwt,
-                ExpiresIn = (int)TimeSpan.FromMinutes(40).TotalSeconds
+                ExpiresIn = (int)TimeSpan.FromMinutes(60).TotalSeconds
 
             };
         }
