@@ -80,6 +80,14 @@ namespace Users.API.Controllers
                 return Ok(result);
 
         }
+
+        [HttpPost("suggestions")]
+        public async Task<List<UserDto>> GetUserSuggestions(SuggestionsDto neededTechnologies, CancellationToken cancellationToken)
+        {
+            System.Console.WriteLine("AIIIIICI: ", neededTechnologies.NeededTechnologies);
+            List<UserDto> suggestedUsers = await _userService.GetUserSuggestions(neededTechnologies.NeededTechnologies, cancellationToken);
+            return suggestedUsers;
+        }
     }
 
 

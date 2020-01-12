@@ -98,5 +98,10 @@ namespace Users.Service
 
             return "success";
         }
+        public async Task<List<UserDto>> GetUserSuggestions(string[] neededTechnologies, CancellationToken cancellationToken)
+        {
+            var suggestedUsers = await _userRepository.GetUserByProjectTech(neededTechnologies, cancellationToken);
+            return _mapper.Map<List<UserDto>>(suggestedUsers);
+        }
     }
 }
