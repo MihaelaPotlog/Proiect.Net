@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "ApiGateway\Ap
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{55DB7124-C184-4A11-9543-614835DDC9BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{1CCA5409-4DD6-4EEF-8651-6BD24A70C0AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{284735BC-4DE8-4F3B-A841-B0743F0FB322}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{284735BC-4DE8-4F3B-A841-B0743F0FB322}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{284735BC-4DE8-4F3B-A841-B0743F0FB322}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CCA5409-4DD6-4EEF-8651-6BD24A70C0AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CCA5409-4DD6-4EEF-8651-6BD24A70C0AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CCA5409-4DD6-4EEF-8651-6BD24A70C0AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CCA5409-4DD6-4EEF-8651-6BD24A70C0AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

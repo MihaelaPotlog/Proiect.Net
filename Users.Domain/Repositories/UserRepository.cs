@@ -16,28 +16,28 @@ namespace Users.Domain.Repositories
 			_context = context;
 		}
 
-		public async Task<List<User>> GetAllUsers(CancellationToken cancellationToken)
-		{
-			return await _context.Users
-						.Include(user => user.UserTechnologies)
-							.ThenInclude(userTechnology => userTechnology.Technology)
-						.ToListAsync(cancellationToken);
-		}
+        public async Task<List<User>> GetAllUsers(CancellationToken cancellationToken)
+        {
+            return await _context.Users
+                        .Include(user =>user.UserTechnologies)
+                            .ThenInclude(userTechnology => userTechnology.Technology)
+                        .ToListAsync(cancellationToken);
+        }
 
 		public async Task<List<Technology>> GetAllTechnologies(CancellationToken cancellationToken)
 		{
 			return await _context.Technologies.ToListAsync(cancellationToken);
 		}
 
-		public async Task<User> GetUser(Guid userId, CancellationToken cancellationToken)
-		{
-			User user = await _context.Users.Include(user => user.UserTechnologies)
-												.ThenInclude(userTechnology => userTechnology.Technology)
-											.Where(thisUser => thisUser.Id == userId)
-											.FirstOrDefaultAsync(cancellationToken);
-
-			return user;
-		}
+        public async Task<User> GetUser(string userId, CancellationToken cancellationToken)
+        {
+            User user = await _context.Users.Include(user => user.UserTechnologies)
+                                                .ThenInclude(userTechnology => userTechnology.Technology)
+                                            .Where(thisUser => thisUser.Id == userId)
+                                            .FirstOrDefaultAsync(cancellationToken);
+            
+            return user;
+        }
 
 		public async Task<User> Update(User user, CancellationToken cancellationToken)
 		{
@@ -60,13 +60,13 @@ namespace Users.Domain.Repositories
 
 		}
 
-		public async Task<User> Add(string firstName, string lastName, string username, string email, string password, CancellationToken cancellationToken)
-		{
-			var newUser = User.UserFactory(firstName, lastName, username, email, password);
-			_context.Users.Add(newUser);
-			await _context.SaveChangesAsync(cancellationToken);
-			return newUser;
-		}
+        public async Task<User> Add(string firstName, string lastName, string username, string email, CancellationToken cancellationToken)
+        {
+            var newUser = User.UserFactory(firstName, lastName, username, email);
+            _context.Users.Add(newUser);
+           await  _context.SaveChangesAsync(cancellationToken);
+            return newUser;
+        }
 
 		public async Task AddUserTechnologyLinks(string[] knownTechnologies, User user, CancellationToken cancellationToken)
 		{
@@ -109,7 +109,7 @@ namespace Users.Domain.Repositories
 
 		public async Task<User> GetByUsername(string username, CancellationToken cancellationToken)
 		{
-			return await _context.Users.FirstOrDefaultAsync(e => e.Username == username, cancellationToken);
+			return await _context.Users.FirstOrDefaultAsync(e => e.UserName == username, cancellationToken);
 		}
 
 		public async Task<List<User>> GetUserByProjectTech(string[] neededTechNames, CancellationToken cancellationToken)
