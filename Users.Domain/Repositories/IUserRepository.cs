@@ -19,5 +19,6 @@ namespace Users.Domain.Repositories
         Task<User> GetByUsername(string username, CancellationToken cancellationToken);
         Task<Technology> GetTechnologyByName(string technologyName, CancellationToken cancellationToken);
         Task RemoveUserTechnologyLinks(string[] removedTechnologiesNames, User user, CancellationToken cancellationToken);
+        Task<List<User>> GetUserByProjectTech(string[] neededTechnologies, CancellationToken cancellationToken);
     }
 }

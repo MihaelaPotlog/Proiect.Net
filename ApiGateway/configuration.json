@@ -81,6 +81,18 @@
         "AllowedScopes": []
       }
     },
+    {
+      "DownstreamPathTemplate": "/v1/users/suggestions",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5000
+        }
+      ],
+      "UpstreamPathTemplate": "/v1/users/suggestions",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
 
     {
       "DownstreamPathTemplate": "/v1/users/data=users",
