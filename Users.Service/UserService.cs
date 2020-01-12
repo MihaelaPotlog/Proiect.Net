@@ -55,7 +55,7 @@ namespace Users.Service
             var signInResult = await _signInManager.PasswordSignInAsync(currentUser.UserName, password: request.Password, isPersistent: false, lockoutOnFailure: false);
 
             if (signInResult.Succeeded == false)
-                return new ErrorMessagesDto(ErrorMessages.InvalidCredentials);
+                return new ErrorResponseDto(ErrorMessages.InvalidCredentials);
             else
                 return new LoginResponseDto()
                 {
@@ -71,11 +71,11 @@ namespace Users.Service
             var result = await _userManager.CreateAsync(currentUser, request.Password);
 
             if (result.Succeeded == false)
-                return new ErrorMessagesDto(result.Errors);
+                return new ErrorResponseDto(result.Errors);
 
             await _userRepository.AddUserTechnologyLinks(request.KnownTechnologies, currentUser, cancellationToken);
 
-            return new RegisterResponseDto();
+            return new SuccessResponseDto();
 
         }
 

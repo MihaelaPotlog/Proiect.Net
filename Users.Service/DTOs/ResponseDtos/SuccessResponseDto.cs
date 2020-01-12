@@ -1,6 +1,6 @@
 ﻿namespace Users.Service.DTOs.ResponseDtos
 {
-    public  class RegisterResponseDto:IResponseDto
+    public  class SuccessResponseDto:IResponseDto
     {
         public bool Succeded { get; set; } = true;
         
