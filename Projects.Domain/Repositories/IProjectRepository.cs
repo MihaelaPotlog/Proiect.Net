@@ -32,6 +32,7 @@ namespace Projects.Domain.Repositories
         public Task<List<Invitation>> GetaAllInvitationsAsOwner(Guid id,CancellationToken cencellationToken);
 
         public Task<List<Invitation>> GetaAllInvitationsAsUser(Guid id, CancellationToken cencellationToken);
+        public Task RemoveInvitation(Invitation invitation);
 
     }
 }

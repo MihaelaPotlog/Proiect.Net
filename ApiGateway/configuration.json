@@ -82,6 +82,38 @@
       }
     },
     {
+      "DownstreamPathTemplate": "/v1/projects/handleinvitation",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5500
+        }
+      ],
+      "UpstreamPathTemplate": "/v1/projects/handleinvitation",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/v1/projects/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5500
+        }
+      ],
+      "UpstreamPathTemplate": "/v1/projects/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
+    },
+    {
       "DownstreamPathTemplate": "/v1/users/suggestions",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -97,7 +129,6 @@
         "AllowedScopes": []
       }
     },
-
     {
       "DownstreamPathTemplate": "/v1/users/data=users",
       "DownstreamScheme": "http",

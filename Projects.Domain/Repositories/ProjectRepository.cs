@@ -164,6 +164,12 @@ namespace Projects.Domain.Repositories
 
             return await invitations;
         }
+
+        public async Task RemoveInvitation(Invitation invitation)
+        {
+            ProjectContext.Invitations.Remove(invitation);
+            await ProjectContext.SaveChangesAsync();
+        }
     }
 
 }
