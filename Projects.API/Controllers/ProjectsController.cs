@@ -60,10 +60,10 @@ namespace Projects.API.Controllers
             }
         }
 
-        [HttpGet("requests")]
-        public async Task<ActionResult<List<Invitation>>> GetOwnerRequests(GetOwnerRequestDto dto, CancellationToken cancellationToken)
+        [HttpGet("requests/{id}")]
+        public async Task<ActionResult<List<ResponseInvitationDTO>>> GetOwnerRequests(Guid id, CancellationToken cancellationToken)
         {
-            var result = await _projectService.GetOwnerRequests(dto, cancellationToken);
+            var result = await _projectService.GetOwnerRequests(id, cancellationToken);
             if (result == null)
                 return BadRequest("nothing");
             else
@@ -71,6 +71,17 @@ namespace Projects.API.Controllers
                 return Ok(result);
             }
         }
+
+        //First list as owner,second as User
+        [HttpGet("my-projects/{id}")]
+        public async Task<ActionResult<List<List<string>>>> GetProjectsNameByClientId(Guid id,CancellationToken cancellationToken)
+        {
+            
+
+            var result = await _projectService.GetProjectsNameByClientId(id, cancellationToken);
+            return Ok(result);
+            
+
         [HttpPost("handleinvitation")]
         public async Task<ActionResult> HandleInvitation(HandleInvitationDto request, CancellationToken cancellationToken)
         {
@@ -89,6 +100,7 @@ namespace Projects.API.Controllers
                 return BadRequest(ErrorMessages.NonexistentProject);
 
             return Ok(response);
+
         }
     }
 }

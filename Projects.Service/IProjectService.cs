@@ -17,8 +17,14 @@ namespace Projects.Service
 
         Task<List<Invitation>> GetUserInvitations(GetUserInvitationDto request, CancellationToken cancellationToken);
 
-        Task<List<Invitation>> GetOwnerRequests(GetOwnerRequestDto request, CancellationToken cancellationToken);
+
+        Task<List<ResponseInvitationDTO>> GetOwnerRequests(Guid request, CancellationToken cancellationToken);
+
+        Task<List<List<string>>> GetProjectsNameByClientId(Guid request, CancellationToken cancellationToken);
+
+       
         Task<string> HandleInvitation(HandleInvitationDto request, CancellationToken cancellationToken);
         Task<ProjectDto> GetProject(Guid id, CancellationToken cancellationToken);
+
     }
 }

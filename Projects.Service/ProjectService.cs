@@ -7,9 +7,11 @@ using Projects.Domain.Repositories;
 using Projects.Service.Common;
 using Projects.Service.Validators;
 using System.Collections.Generic;
+using Projects.Domain.Common;
 using Projects.Service.Constants;
 using Projects.Service.DTOs.RequestsDTOs;
 using System;
+
 
 namespace Projects.Service
 {
@@ -54,15 +56,15 @@ namespace Projects.Service
             }
         }
 
-        public async Task<List<Invitation>> GetOwnerRequests(GetOwnerRequestDto request, CancellationToken cancellationToken)
+        public async Task<List<ResponseInvitationDTO>> GetOwnerRequests(Guid request, CancellationToken cancellationToken)
         {
-            var requests = await _projectRepository.GetaAllInvitationsAsOwner(request.OwnerId, cancellationToken);
+            var requests = await _projectRepository.GetaAllInvitationsAsOwner(request, cancellationToken);
 
             if (requests.Count == 0)
                 return null;
             else
             {
-                return requests;
+                return _mapper.Map<List<ResponseInvitationDTO>>(requests);
             }
         }
         public async Task<ProjectDto> CreateProject(CreateProjectDto request, CancellationToken cancellationToken)
@@ -88,6 +90,19 @@ namespace Projects.Service
 
             return _mapper.Map<List<ProjectDto>>(projects);
         }
+
+
+        public async Task<List<List<string>>> GetProjectsNameByClientId(Guid request, CancellationToken cancellationToken)
+        {
+            var projectsAsOwner = await _projectRepository.GetaAllProjectsNameAsOwner(request, cancellationToken);
+            var projectsAsUser = await _projectRepository.GetaAllProjectsNameAsUser(request, cancellationToken);
+
+            List<List<string>> combinedLists = new List<List<string>>();
+
+            combinedLists.Add(projectsAsOwner);
+            combinedLists.Add(projectsAsUser);
+
+            return combinedLists;
 
         public async Task<string> HandleInvitation(HandleInvitationDto request, CancellationToken cancellationToken)
         {
@@ -116,6 +131,7 @@ namespace Projects.Service
         {
             Project currentProject = await  _projectRepository.GetProjectInfo(id, cancellationToken);
             return _mapper.Map<ProjectDto>(currentProject);
+
         }
     }
 }
