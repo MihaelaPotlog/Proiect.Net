@@ -91,7 +91,11 @@
         }
       ],
       "UpstreamPathTemplate": "/v1/users/suggestions",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
     },
 
     {

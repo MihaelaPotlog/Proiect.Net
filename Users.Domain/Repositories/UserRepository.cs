@@ -109,7 +109,7 @@ namespace Users.Domain.Repositories
 
 		public async Task<User> GetByUsername(string username, CancellationToken cancellationToken)
 		{
-			return await _context.Users.FirstOrDefaultAsync(e => e.Username == username, cancellationToken);
+			return await _context.Users.FirstOrDefaultAsync(e => e.UserName == username, cancellationToken);
 		}
 
 		public async Task<List<User>> GetUserByProjectTech(string[] neededTechNames, CancellationToken cancellationToken)

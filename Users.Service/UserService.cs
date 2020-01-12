@@ -77,35 +77,11 @@ namespace Users.Service
 
             await _userRepository.AddUserTechnologyLinks(request.KnownTechnologies, currentUser, cancellationToken);
 
-
-
-
             return new RegisterResponseDto();
 
         }
 
 
-        public async Task<string> ModifyUser(ModifyUserDto request, CancellationToken cancellationToken)
-        {
-            User modifiedUser = await _userRepository.GetUser(request.Id, cancellationToken);
-            if (modifiedUser == null)
-                return "invalid id";
-            ModifyUserDtoValidator modifyUserValidator = new ModifyUserDtoValidator(_userRepository);
-            var validationResult = await modifyUserValidator.ValidateAsync(request, cancellationToken);
-
-            if (validationResult.IsValid == false)
-                return validationResult.ToString();
-
-            modifiedUser.FirstName = request.FirstName;
-            modifiedUser.LastName = request.LastName;
-            // modifiedUser.Username = request.Username;
-            await _userRepository.Update(modifiedUser, cancellationToken);
-
-            await _userRepository.AddUserTechnologyLinks(request.AddedTechnologiesNames, modifiedUser, cancellationToken);
-            await _userRepository.RemoveUserTechnologyLinks(request.RemovedTechnologiesNames, modifiedUser, cancellationToken);
-
-            return "success";
-        }
         public async Task<List<UserDto>> GetUserSuggestions(string[] neededTechnologies, CancellationToken cancellationToken)
         {
             var suggestedUsers = await _userRepository.GetUserByProjectTech(neededTechnologies, cancellationToken);

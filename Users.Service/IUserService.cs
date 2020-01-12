@@ -12,8 +12,7 @@ namespace Users.Service
         Task<IEnumerable<Technology>> GetTechnologies(CancellationToken cancellationToken);
         Task<IResponseDto> Login(LoginUserDto request, CancellationToken cancellationToken);
         Task<IResponseDto> Register(CreateUserDto request, CancellationToken cancellationToken);
-        Task<string> ModifyUser(ModifyUserDto request, CancellationToken cancellationToken);
-        Task<UserDto> GetUser(Guid Id, CancellationToken cancellationToken);
+        Task<UserDto> GetUser(string Id, CancellationToken cancellationToken);
         Task<List<UserDto>> GetUserSuggestions(string[] neededTechnologies, CancellationToken cancellationToken);
     }
 }

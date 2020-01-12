@@ -39,7 +39,7 @@ namespace Users.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<User>> Login(LoginUserDto dto, CancellationToken cancellationToken)
+        public async Task<ActionResult<IResponseDto>> Login(LoginUserDto dto, CancellationToken cancellationToken)
         {
             var response = await _userService.Login(dto, cancellationToken);
             if (response.Succeded)
@@ -60,16 +60,7 @@ namespace Users.API.Controllers
                 return BadRequest(response);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> ModifyUser(ModifyUserDto dto, CancellationToken cancellationToken)
-        {
-            string result = await _userService.ModifyUser(dto, cancellationToken);
-            if (result != "success")
-                return BadRequest(result);
-            else
-                return Ok(result);
-
-        }
+        
 
         [HttpPost("suggestions")]
         public async Task<List<UserDto>> GetUserSuggestions(SuggestionsDto neededTechnologies, CancellationToken cancellationToken)

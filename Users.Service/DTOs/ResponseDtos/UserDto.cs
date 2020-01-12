@@ -1,8 +1,7 @@
 ﻿namespace Users.Service.DTOs
 {
-    public class UserDto:IResponseDto
+    public class UserDto
     {
-        public bool Succeded { get; set; } = true;
         public string UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
