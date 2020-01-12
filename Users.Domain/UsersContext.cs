@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Users.Domain.Models;
 
 namespace Users.Domain
 {
-    public sealed class UsersContext : DbContext
+    public sealed class UsersContext : IdentityDbContext<User>
     {
-        public DbSet<User> Users { get; set; }
+        
 
         public DbSet<Technology> Technologies { get; set; }
         public DbSet<UserTechnology> UserTechnologies { get; set; }
@@ -30,8 +31,9 @@ namespace Users.Domain
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<UserTechnology>().HasKey(t => new { t.UserId, t.TechnologyId });
+
             modelBuilder.Entity<Technology>().HasData(
                 Technology.CreateTechnology("Java"),
                 Technology.CreateTechnology("JavaScript"),

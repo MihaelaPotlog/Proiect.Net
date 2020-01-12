@@ -1,34 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace Users.Domain.Models
 {
-    public class User
+    public class User:IdentityUser
     {
-        public Guid Id { get; private set; }
         public string FirstName { get;  set; }
-        public string LastName { get;  set; }
-        public string Email { get; internal set; }
-        public string Username { get;  set; }
-        public string Password { get; private set; }
+        public string LastName { get;  set; } 
+        
         public List<UserTechnology> UserTechnologies { get; private set; }
 
         internal User()
         {
-            Id = Guid.NewGuid();
             UserTechnologies = new List<UserTechnology>();
         }
-        public static User UserFactory(string firstName, string lastName, string username, string email, string password)
+        public static User UserFactory(string email, string username,string firstName, string lastName)
         {
             User newStudent = new User()
             {
-
                 FirstName = firstName,
                 LastName = lastName,
-                Username = username,
                 Email = email,
-                Password = password
-
+                UserName = username
             };
             return newStudent;
         }

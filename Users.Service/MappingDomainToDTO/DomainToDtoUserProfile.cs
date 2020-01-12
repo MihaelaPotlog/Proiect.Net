@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using AutoMapper;
 using Users.Domain.Models;
 using Users.Service.DTOs;
@@ -14,7 +11,8 @@ namespace Users.Service.MappingDomainToDTO
         {
             CreateMap<User, UserDto>()
                 .ForMember(dest => dest.KnownTechnologies, opt =>
-                    opt.MapFrom(src => src.UserTechnologies.Select(elem => elem.Technology.Name)));
+                    opt.MapFrom(src => src.UserTechnologies.Select(elem => elem.Technology.Name)))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id));
 
         }
     }

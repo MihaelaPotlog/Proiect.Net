@@ -1,3 +1,5 @@
+using System;
+using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Projects.Domain;
 using Projects.Domain.Repositories;
@@ -35,7 +38,34 @@ namespace Projects.API
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
             services.AddAutoMapper(typeof(Startup), typeof(IProjectService));
-           
+
+            var audienceSettings = Configuration.GetSection("Audience");
+            
+
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(audienceSettings["Secret"]));
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = signingKey,
+                ValidateIssuer = true,
+                ValidIssuer = audienceSettings["Iss"],
+                ValidateAudience = true,
+                ValidAudience = audienceSettings["Aud"],
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero,
+                RequireExpirationTime = true,
+            };
+
+            services.AddAuthentication(o =>
+                {
+                    o.DefaultAuthenticateScheme = "TestKey";
+                })
+                .AddJwtBearer("TestKey", x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.TokenValidationParameters = tokenValidationParameters;
+                });
+
         }
 
 

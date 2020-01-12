@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Users.Service.DTOs
+﻿namespace Users.Service.DTOs
 {
     public class ModifyUserDto
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Username { get; set; }

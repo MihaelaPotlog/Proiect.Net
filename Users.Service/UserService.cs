@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Users.Domain.Models;
 using Users.Domain.Repositories;
 using Users.Service.DTOs;
-using Users.Service.Validators;
+using Users.Service.DTOs.ResponseDtos;
+
 
 namespace Users.Service
 {
@@ -15,11 +16,17 @@ namespace Users.Service
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly IOptions<Audience> _settings;
 
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, IOptions<Audience> settings, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _settings = settings;
         }
 
         public async Task<IEnumerable<UserDto>> GetUsers(CancellationToken cancellationToken)
@@ -27,9 +34,9 @@ namespace Users.Service
             IEnumerable<User> users = await _userRepository.GetAllUsers(cancellationToken);
             return _mapper.Map<IEnumerable<UserDto>>(users);
         }
-        public async Task<UserDto>GetUser(Guid Id,CancellationToken cancellationToken)
+        public async Task<UserDto> GetUser(string id, CancellationToken cancellationToken)
         {
-            User user = await _userRepository.GetUser(Id, cancellationToken);
+            User user = await _userRepository.GetUser(id, cancellationToken);
             return _mapper.Map<UserDto>(user);
 
         }
@@ -38,65 +45,46 @@ namespace Users.Service
             return await _userRepository.GetAllTechnologies(cancellationToken);
         }
 
-        public async Task<User> LoginUser(LoginUserDto request, CancellationToken cancellationToken)
-        {
-            var emailToCheck = request.Email;
-            var passwordToCheck = request.Password;
-            var addr = new EmailAddressAttribute();
 
-            if (addr.IsValid(emailToCheck))
-            {
-                var foundUser = await _userRepository.GetByEmail(emailToCheck, cancellationToken);
-                if (passwordToCheck == foundUser.Password)
-                    return foundUser;
-                else
-                    return null;
-            }
-            else
-            {
-                return null;
-            }
-        }
 
-        public async Task<string> RegisterUser(CreateUserDto request, CancellationToken cancellationToken)
+        public async Task<IResponseDto> Login(LoginUserDto request, CancellationToken cancellationToken)
         {
+            User currentUser = await _userRepository.GetByEmail(request.Email, cancellationToken);
+            if (currentUser == null)
+                return new ErrorResponseDto(ErrorMessages.InvalidEmail);
+
+            var signInResult = await _signInManager.PasswordSignInAsync(currentUser.UserName, password: request.Password, isPersistent: false, lockoutOnFailure: false);
           
-            CreateUserDtoValidator dtoValidator = new CreateUserDtoValidator(_userRepository);
-            var result = await dtoValidator.ValidateAsync(request, cancellationToken);
-
-            if (result.IsValid == true)
-            {
-                var currentUser = await _userRepository.Add(request.FirstName, request.LastName, request.Username,
-                    request.Email, request.Password, cancellationToken);
-                
-                await _userRepository.AddUserTechnologyLinks(request.KnownTechnologies, currentUser, cancellationToken);
-
-                return "success";
-            }
-
-            return result.ToString();
+            if (signInResult.Succeeded == false)
+                return new ErrorResponseDto(ErrorMessages.InvalidCredentials);
+            else
+                return new LoginResponseDto()
+                {
+                    Token = Token.CreateToken(currentUser.UserName, _settings.Value),
+                    User = _mapper.Map<UserDto>(currentUser)
+                };
         }
 
-        public async Task<string> ModifyUser(ModifyUserDto request, CancellationToken cancellationToken)
+        public async Task<IResponseDto> Register(CreateUserDto request, CancellationToken cancellationToken)
         {
-            User modifiedUser = await _userRepository.GetUser(request.Id, cancellationToken);
-            if (modifiedUser == null)
-                return "invalid id";
-            ModifyUserDtoValidator modifyUserValidator = new ModifyUserDtoValidator(_userRepository);
-            var  validationResult = await modifyUserValidator.ValidateAsync(request, cancellationToken);
+            var currentUser = User.UserFactory(request.Email, request.Username, request.FirstName, request.LastName);
 
-            if (validationResult.IsValid == false)
-                return validationResult.ToString();
+            var result = await _userManager.CreateAsync(currentUser, request.Password);
 
-            modifiedUser.FirstName = request.FirstName;
-            modifiedUser.LastName = request.LastName;
-            modifiedUser.Username = request.Username;
-            await _userRepository.Update(modifiedUser, cancellationToken);
+            if (result.Succeeded == false)
+                return new ErrorResponseDto(result.Errors);
 
-            await _userRepository.AddUserTechnologyLinks(request.AddedTechnologiesNames, modifiedUser, cancellationToken);
-            await _userRepository.RemoveUserTechnologyLinks(request.RemovedTechnologiesNames, modifiedUser, cancellationToken);
+            await _userRepository.AddUserTechnologyLinks(request.KnownTechnologies, currentUser, cancellationToken);
 
-            return "success";
+            return new SuccessResponseDto();
+
+        }
+
+
+        public async Task<List<UserDto>> GetUserSuggestions(string[] neededTechnologies, CancellationToken cancellationToken)
+        {
+            var suggestedUsers = await _userRepository.GetUserByProjectTech(neededTechnologies, cancellationToken);
+            return _mapper.Map<List<UserDto>>(suggestedUsers);
         }
     }
 }
