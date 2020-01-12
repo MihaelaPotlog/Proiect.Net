@@ -51,9 +51,10 @@ namespace Users.Service
         {
             User currentUser = await _userRepository.GetByEmail(request.Email, cancellationToken);
             if (currentUser == null)
-                return null;
-            var signInResult = await _signInManager.PasswordSignInAsync(currentUser.UserName, password: request.Password, isPersistent: false, lockoutOnFailure: false);
+                return new ErrorResponseDto(ErrorMessages.InvalidEmail);
 
+            var signInResult = await _signInManager.PasswordSignInAsync(currentUser.UserName, password: request.Password, isPersistent: false, lockoutOnFailure: false);
+          
             if (signInResult.Succeeded == false)
                 return new ErrorResponseDto(ErrorMessages.InvalidCredentials);
             else
