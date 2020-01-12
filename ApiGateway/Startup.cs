@@ -61,11 +61,12 @@ namespace ApiGateway
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            await app.UseOcelot();
             app.UseCors(builder => builder
-                       .AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader());
+                      .AllowAnyOrigin()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader());
+            await app.UseOcelot();
+           
         }
     }
 }

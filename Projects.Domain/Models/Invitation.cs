@@ -11,8 +11,8 @@ namespace Projects.Domain.Models
         public Guid ProjectId { get; private set; }
         public Project Project { get; private set; }
 
-        public Guid SenderId { get; private set; }
-        public Guid ReceiverId { get; private set; }
+        public Guid CollaboratorId { get; private set; }
+        public Guid OwnerId { get; private set; }
 
 
         private Invitation()
@@ -20,7 +20,7 @@ namespace Projects.Domain.Models
            
         }
 
-        public static Invitation CreateInvitation( Guid projectId, Project project, Guid senderId, Guid receiverId, int invitationType)
+        public static Invitation CreateInvitation( Guid projectId, Project project, Guid CollaboratorId, Guid OwnerId, int invitationType)
         {
 
             return new Invitation()
@@ -29,8 +29,8 @@ namespace Projects.Domain.Models
                 Status = InvitationStatus.Pending,
                 ProjectId = projectId,
                 Project = project,
-                SenderId = senderId,
-                ReceiverId = receiverId,
+                CollaboratorId = CollaboratorId,
+                OwnerId = OwnerId,
                 InvitationType = invitationType
             };
         }
