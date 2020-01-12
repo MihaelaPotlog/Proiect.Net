@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -8,7 +7,6 @@ using Microsoft.Extensions.Options;
 using Users.Domain.Models;
 using Users.Domain.Repositories;
 using Users.Service.DTOs;
-using Users.Service.Validators;
 using Users.Service.DTOs.ResponseDtos;
 
 

@@ -1,6 +1,4 @@
-﻿using System.Data;
-
-namespace Projects.Service.Common
+﻿namespace Projects.Service.Common
 {
     public static class ErrorMessages
     {

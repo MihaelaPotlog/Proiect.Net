@@ -7,7 +7,6 @@ using Projects.Domain.Repositories;
 using Projects.Service.Common;
 using Projects.Service.Validators;
 using System.Collections.Generic;
-using Projects.Domain.Common;
 using Projects.Service.Constants;
 using Projects.Service.DTOs.RequestsDTOs;
 using System;
@@ -115,7 +114,7 @@ namespace Projects.Service
 
         public async Task<ProjectDto> GetProject(Guid id, CancellationToken cancellationToken)
         {
-            Project currentProject = await  _projectRepository.Get(id, cancellationToken);
+            Project currentProject = await  _projectRepository.GetProjectInfo(id, cancellationToken);
             return _mapper.Map<ProjectDto>(currentProject);
         }
     }
