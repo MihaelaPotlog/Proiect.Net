@@ -132,6 +132,30 @@
       ],
       "UpstreamPathTemplate": "/v1/users",
       "UpstreamHttpMethod": [ "Put" ]
+    },
+    {
+      "DownstreamPathTemplate": "/v1/projects/my-projects/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5500
+        }
+      ],
+      "UpstreamPathTemplate": "/v1/projects/my-projects/{id}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/v1/projects/requests/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5500
+        }
+      ],
+      "UpstreamPathTemplate": "/v1/projects/requests/{id}",
+      "UpstreamHttpMethod": [ "Get" ]
     }
   ],
   "GlobalConfiguration": {

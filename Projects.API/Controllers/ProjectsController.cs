@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Projects.Domain.Models;
 using Projects.Service;
 using Projects.Service.DTOs;
+using Projects.Service.DTOs.RequestsDTOs;
 
 namespace Projects.API.Controllers
 {
@@ -56,16 +58,27 @@ namespace Projects.API.Controllers
             }
         }
 
-        [HttpGet("requests")]
-        public async Task<ActionResult<List<Invitation>>> GetOwnerRequests(GetOwnerRequestDto dto, CancellationToken cancellationToken)
+        [HttpGet("requests/{id}")]
+        public async Task<ActionResult<List<ResponseInvitationDTO>>> GetOwnerRequests(Guid id, CancellationToken cancellationToken)
         {
-            var result = await _projectService.GetOwnerRequests(dto, cancellationToken);
+            var result = await _projectService.GetOwnerRequests(id, cancellationToken);
             if (result == null)
                 return BadRequest("nothing");
             else
             {
                 return Ok(result);
             }
+        }
+
+        //First list as owner,second as User
+        [HttpGet("my-projects/{id}")]
+        public async Task<ActionResult<List<List<string>>>> GetProjectsNameByClientId(Guid id,CancellationToken cancellationToken)
+        {
+            
+
+            var result = await _projectService.GetProjectsNameByClientId(id, cancellationToken);
+            return Ok(result);
+            
         }
     }
 }

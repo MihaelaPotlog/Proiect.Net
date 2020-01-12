@@ -33,5 +33,8 @@ namespace Projects.Domain.Repositories
 
         public Task<List<Invitation>> GetaAllInvitationsAsUser(Guid id, CancellationToken cencellationToken);
 
+        public Task<List<string>> GetaAllProjectsNameAsUser(Guid id, CancellationToken cencellationToken);
+        public Task<List<string>> GetaAllProjectsNameAsOwner(Guid id, CancellationToken cencellationToken);
+
     }
 }
