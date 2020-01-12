@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +26,7 @@ namespace Users.API.Controllers
         }
 
         [HttpGet("{Id}")]
-        public async Task<ActionResult<UserDto>> GetUserById(Guid Id, CancellationToken cancellationToken)
+        public async Task<ActionResult<UserDto>> GetUserById(string Id, CancellationToken cancellationToken)
         {
             UserDto user = await _userService.GetUser(Id, cancellationToken);
             return Ok(user);
@@ -40,34 +39,25 @@ namespace Users.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<User>> LoginUser(LoginUserDto dto, CancellationToken cancellationToken)
+        public async Task<ActionResult<User>> Login(LoginUserDto dto, CancellationToken cancellationToken)
         {
-            var user = await _userService.LoginUser(dto, cancellationToken);
-            try
-            {
-                if (user != null)
-                {
-                    return Ok(user.Id);
-                }
-                else
-                {
-                    return BadRequest();
-                }
-            }
-            catch
-            {
-                return StatusCode(500);
-            }
+            var response = await _userService.Login(dto, cancellationToken);
+            if (response.Succeded)
+                return Ok(response);
+            else 
+                return BadRequest(response);
+
         }
 
+
         [HttpPost]
-        public async Task<ActionResult<string>> CreateUser(CreateUserDto dto, CancellationToken cancellationToken)
+        public async Task<ActionResult<IResponseDto>> CreateUser(CreateUserDto dto, CancellationToken cancellationToken)
         {
-            var raspuns = await _userService.RegisterUser(dto, cancellationToken);
-            if (raspuns.Equals("success"))
-                return raspuns;
+            var response = await _userService.Register(dto, cancellationToken);
+            if (response.Succeded)
+                return Ok(response);
             else
-                return BadRequest(raspuns);
+                return BadRequest(response);
         }
 
         [HttpPut]

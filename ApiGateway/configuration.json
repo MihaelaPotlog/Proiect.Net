@@ -10,7 +10,11 @@
         }
       ],
       "UpstreamPathTemplate": "/v1/projects",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/v1/projects",
@@ -22,7 +26,11 @@
         }
       ],
       "UpstreamPathTemplate": "/v1/projects",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/v1/projects/invitations",
@@ -34,7 +42,11 @@
         }
       ],
       "UpstreamPathTemplate": "/v1/projects/invitations",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/v1/projects/invitations",
@@ -46,7 +58,12 @@
         }
       ],
       "UpstreamPathTemplate": "/v1/projects/invitations",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
+
     },
     {
       "DownstreamPathTemplate": "/v1/projects/requests",
@@ -58,7 +75,11 @@
         }
       ],
       "UpstreamPathTemplate": "/v1/projects/requests",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
     },
 
     {
@@ -71,7 +92,11 @@
         }
       ],
       "UpstreamPathTemplate": "/v1/users/data=users",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/v1/users",
@@ -95,7 +120,11 @@
         }
       ],
       "UpstreamPathTemplate": "/v1/users/{id}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/v1/users/data=technologies",
@@ -107,7 +136,11 @@
         }
       ],
       "UpstreamPathTemplate": "/v1/users/data=technologies",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/v1/users/login",
@@ -131,7 +164,11 @@
         }
       ],
       "UpstreamPathTemplate": "/v1/users",
-      "UpstreamHttpMethod": [ "Put" ]
+      "UpstreamHttpMethod": [ "Put" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
     }
   ],
   "GlobalConfiguration": {

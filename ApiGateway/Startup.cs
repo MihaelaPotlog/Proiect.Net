@@ -1,9 +1,12 @@
+using System;
+using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 
 namespace ApiGateway
@@ -27,6 +30,31 @@ namespace ApiGateway
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
+
+            var audienceSettings = Configuration.GetSection("Audience");
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(audienceSettings["Secret"]));
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = signingKey,
+                ValidateIssuer = true,
+                ValidIssuer = audienceSettings["Iss"],
+                ValidateAudience = true,
+                ValidAudience = audienceSettings["Aud"],
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero,
+                RequireExpirationTime = true,
+            };
+
+            services.AddAuthentication(o =>
+                {
+                    o.DefaultAuthenticateScheme = "TestKey";
+                })
+                .AddJwtBearer("TestKey", x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.TokenValidationParameters = tokenValidationParameters;
+                });
             services.AddOcelot(Configuration);
         }
 

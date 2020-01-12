@@ -19,7 +19,7 @@ namespace Users.Domain.Repositories
         public async Task<List<User>> GetAllUsers(CancellationToken cancellationToken)
         {
             return await _context.Users
-                        .Include(user => user.UserTechnologies)
+                        .Include(user =>user.UserTechnologies)
                             .ThenInclude(userTechnology => userTechnology.Technology)
                         .ToListAsync(cancellationToken);
         }
@@ -29,7 +29,7 @@ namespace Users.Domain.Repositories
             return await _context.Technologies.ToListAsync(cancellationToken);
         }
 
-        public async Task<User> GetUser(Guid userId, CancellationToken cancellationToken)
+        public async Task<User> GetUser(string userId, CancellationToken cancellationToken)
         {
             User user = await _context.Users.Include(user => user.UserTechnologies)
                                                 .ThenInclude(userTechnology => userTechnology.Technology)
@@ -60,9 +60,9 @@ namespace Users.Domain.Repositories
 
         }
 
-        public async Task<User> Add(string firstName, string lastName, string username, string email, string password, CancellationToken cancellationToken)
+        public async Task<User> Add(string firstName, string lastName, string username, string email, CancellationToken cancellationToken)
         {
-            var newUser = User.UserFactory(firstName, lastName, username, email, password);
+            var newUser = User.UserFactory(firstName, lastName, username, email);
             _context.Users.Add(newUser);
            await  _context.SaveChangesAsync(cancellationToken);
             return newUser;
@@ -109,7 +109,7 @@ namespace Users.Domain.Repositories
 
         public async Task<User> GetByUsername(string username, CancellationToken cancellationToken)
         {
-            return await _context.Users.FirstOrDefaultAsync(e => e.Username == username, cancellationToken);
+            return await _context.Users.FirstOrDefaultAsync(e => e.UserName == username, cancellationToken);
         }
     }
 }
