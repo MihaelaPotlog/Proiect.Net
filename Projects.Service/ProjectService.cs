@@ -103,6 +103,7 @@ namespace Projects.Service
             combinedLists.Add(projectsAsUser);
 
             return combinedLists;
+        }
 
         public async Task<string> HandleInvitation(HandleInvitationDto request, CancellationToken cancellationToken)
         {

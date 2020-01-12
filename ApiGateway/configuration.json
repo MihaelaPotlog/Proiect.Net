@@ -237,14 +237,8 @@
       ],
       "UpstreamPathTemplate": "/v1/projects/requests/{id}",
       "UpstreamHttpMethod": [ "Get" ]
-
-      "UpstreamHttpMethod": [ "Put" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "TestKey",
-        "AllowedScopes": []
-      }
-
     }
+    
   ],
   "GlobalConfiguration": {
     "RequestIdKey": "OcRequestId",

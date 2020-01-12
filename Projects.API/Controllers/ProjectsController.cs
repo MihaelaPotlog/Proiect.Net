@@ -74,12 +74,13 @@ namespace Projects.API.Controllers
 
         //First list as owner,second as User
         [HttpGet("my-projects/{id}")]
-        public async Task<ActionResult<List<List<string>>>> GetProjectsNameByClientId(Guid id,CancellationToken cancellationToken)
+        public async Task<ActionResult<List<List<string>>>> GetProjectsNameByClientId(Guid id, CancellationToken cancellationToken)
         {
-            
+
 
             var result = await _projectService.GetProjectsNameByClientId(id, cancellationToken);
             return Ok(result);
+        }
             
 
         [HttpPost("handleinvitation")]

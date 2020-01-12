@@ -203,7 +203,7 @@ namespace Projects.Domain.Repositories
 
             return await projectsAsUser;
         }
-    }
+    
 
 
         public async Task RemoveInvitation(Invitation invitation)
