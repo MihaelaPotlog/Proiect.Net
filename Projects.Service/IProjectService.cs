@@ -19,6 +19,7 @@ namespace Projects.Service
 
 
         Task<List<ResponseInvitationDTO>> GetOwnerRequests(Guid request, CancellationToken cancellationToken);
+        Task<List<ResponseInvitationDTO>> GetUserRequests(Guid request, CancellationToken cancellationToken);
 
         Task<List<List<string>>> GetProjectsNameByClientId(Guid request, CancellationToken cancellationToken);
 

@@ -171,12 +171,9 @@ namespace Projects.Domain.Repositories
         public async Task<List<Invitation>> GetaAllInvitationsAsOwner(Guid id, CancellationToken cancellationToken)
         {
 
-
-
             var invitations = (from i in ProjectContext.Invitations where i.OwnerId == id && i.InvitationType == InvitationType.UserToOwner select i)
                 .Include(invitation => invitation.Project)
                 .ToListAsync(cancellationToken);
-
 
             return await invitations;
         }
@@ -184,8 +181,9 @@ namespace Projects.Domain.Repositories
         public async Task<List<Invitation>> GetaAllInvitationsAsUser(Guid id, CancellationToken cancellationToken)
         {
             var invitations =
-                (from i in ProjectContext.Invitations where i.CollaboratorId == id select i).ToListAsync(
-                    cancellationToken);
+                (from i in ProjectContext.Invitations where i.CollaboratorId == id && i.InvitationType == InvitationType.OwnerToUser select i)
+                .Include(invitation => invitation.Project)
+                .ToListAsync(cancellationToken);
 
             return await invitations;
         }

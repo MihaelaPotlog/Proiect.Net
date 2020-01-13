@@ -134,6 +134,18 @@ namespace Projects.Service
             return _mapper.Map<ProjectDto>(currentProject);
 
         }
+
+        public async Task<List<ResponseInvitationDTO>> GetUserRequests(Guid request, CancellationToken cancellationToken)
+        {
+            var requests = await _projectRepository.GetaAllInvitationsAsUser(request, cancellationToken);
+
+            if (requests.Count == 0)
+                return null;
+            else
+            {
+                return _mapper.Map<List<ResponseInvitationDTO>>(requests);
+            }
+        }
     }
 }
 

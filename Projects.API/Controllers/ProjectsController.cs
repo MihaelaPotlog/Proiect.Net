@@ -71,7 +71,17 @@ namespace Projects.API.Controllers
                 return Ok(result);
             }
         }
-
+        [HttpGet("invitations/{id}")]
+        public async Task<ActionResult<List<ResponseInvitationDTO>>> GetUserRequests(Guid id, CancellationToken cancellationToken)
+        {
+            var result = await _projectService.GetUserRequests(id, cancellationToken);
+            if (result == null)
+                return BadRequest("nothing");
+            else
+            {
+                return Ok(result);
+            }
+        }
         //First list as owner,second as User
         [HttpGet("my-projects/{id}")]
         public async Task<ActionResult<List<List<string>>>> GetProjectsNameByClientId(Guid id, CancellationToken cancellationToken)

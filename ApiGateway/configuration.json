@@ -134,6 +134,22 @@
       }
     },
     {
+      "DownstreamPathTemplate": "/v1/projects/invitations/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5500
+        }
+      ],
+      "UpstreamPathTemplate": "/v1/projects/invitations/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
+    },
+    {
       "DownstreamPathTemplate": "/v1/projects/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -198,7 +214,7 @@
         "AllowedScopes": []
       }
     },
- 
+
     {
       "DownstreamPathTemplate": "/v1/projects/my-projects/{id}",
       "DownstreamScheme": "http",
