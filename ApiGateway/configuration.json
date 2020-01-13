@@ -1,6 +1,42 @@
 ﻿{
   "ReRoutes": [
     {
+      "DownstreamPathTemplate": "/v1/users/data=technologies",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5000
+        }
+      ],
+      "UpstreamPathTemplate": "/v1/users/data=technologies",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/v1/users/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5000
+        }
+      ],
+      "UpstreamPathTemplate": "/v1/users/login",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/v1/users",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5000
+        }
+      ],
+      "UpstreamPathTemplate": "/v1/users",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
       "DownstreamPathTemplate": "/v1/projects",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -145,18 +181,7 @@
         "AllowedScopes": []
       }
     },
-    {
-      "DownstreamPathTemplate": "/v1/users",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5000
-        }
-      ],
-      "UpstreamPathTemplate": "/v1/users",
-      "UpstreamHttpMethod": [ "Post" ]
-    },
+
     {
       "DownstreamPathTemplate": "/v1/users/{id}",
       "DownstreamScheme": "http",
@@ -173,47 +198,7 @@
         "AllowedScopes": []
       }
     },
-    {
-      "DownstreamPathTemplate": "/v1/users/data=technologies",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5000
-        }
-      ],
-      "UpstreamPathTemplate": "/v1/users/data=technologies",
-      "UpstreamHttpMethod": [ "Get" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "TestKey",
-        "AllowedScopes": []
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/v1/users/login",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5000
-        }
-      ],
-      "UpstreamPathTemplate": "/v1/users/login",
-      "UpstreamHttpMethod": [ "Post" ]
-    },
-    {
-      "DownstreamPathTemplate": "/v1/users",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5000
-        }
-      ],
-      "UpstreamPathTemplate": "/v1/users",
-
-      "UpstreamHttpMethod": [ "Put" ]
-    },
+ 
     {
       "DownstreamPathTemplate": "/v1/projects/my-projects/{id}",
       "DownstreamScheme": "http",
@@ -238,7 +223,7 @@
       "UpstreamPathTemplate": "/v1/projects/requests/{id}",
       "UpstreamHttpMethod": [ "Get" ]
     }
-    
+
   ],
   "GlobalConfiguration": {
     "RequestIdKey": "OcRequestId",
