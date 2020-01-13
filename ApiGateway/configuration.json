@@ -118,7 +118,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/v1/projects/handleinvitation",
+      "DownstreamPathTemplate": "/v1/projects/invitations",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -126,8 +126,8 @@
           "Port": 5500
         }
       ],
-      "UpstreamPathTemplate": "/v1/projects/handleinvitation",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamPathTemplate": "/v1/projects/invitations",
+      "UpstreamHttpMethod": [ "Patch" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "TestKey",
         "AllowedScopes": []
