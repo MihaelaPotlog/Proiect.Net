@@ -93,7 +93,7 @@ namespace Projects.API.Controllers
         }
             
 
-        [HttpPatch("invitations")]
+        [HttpPost("handleinvitation")]
         public async Task<ActionResult> HandleInvitation(HandleInvitationDto request, CancellationToken cancellationToken)
         {
             string response = await _projectService.HandleInvitation(request, cancellationToken);
